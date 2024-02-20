@@ -3,17 +3,21 @@ import React from "react";
 import { ActivityIndicator, TouchableOpacity, Text } from "react-native";
 import StyledText from "./StyledText";
 
-interface ButtonProps {
+interface ButtonProps extends React.ComponentProps<typeof TouchableOpacity> {
   isLoading?: boolean;
   title: string;
 }
 
-const Button: React.FC<ButtonProps> = ({ isLoading = false, title }) => {
+const Button: React.FC<ButtonProps> = ({
+  isLoading = false,
+  title,
+  ...props
+}) => {
   return (
     <TouchableOpacity
+      {...props}
       disabled={isLoading}
       className="mt-4 flex h-12 bg-black items-center justify-center rounded-md px-4 text-white"
-      onPress={() => {}}
     >
       {isLoading ? (
         <ActivityIndicator size="small" color="#FFFFFF" />

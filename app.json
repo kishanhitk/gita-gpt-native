@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "gita-gpt-native",
+    "name": "Gita GPT",
     "slug": "gita-gpt-native",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -32,7 +32,6 @@
     "plugins": [
       "expo-font",
       "expo-router"
-    ],
-    "scheme": "your-app-scheme"
+    ]
   }
 }
