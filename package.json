@@ -12,6 +12,7 @@
   "dependencies": {
     "@expo-google-fonts/quicksand": "^0.2.3",
     "@types/react": "~18.2.45",
+    "clsx": "^2.1.0",
     "expo": "~50.0.7",
     "expo-constants": "~15.4.5",
     "expo-font": "~11.10.3",
