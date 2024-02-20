@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import {
   useFonts,
   Quicksand_300Light,
@@ -42,6 +42,27 @@ export default function App() {
       >
         Find sloce in the wisdom of Shree Krishna
       </Text>
+      <Pressable
+        style={{
+          backgroundColor: "black",
+          borderRadius: 7,
+          width: "100%",
+          alignItems: "center",
+          justifyContent: "center",
+          paddingVertical: 12,
+        }}
+      >
+        <Text
+          style={{
+            color: "white",
+            fontFamily: "Quicksand_600SemiBold",
+            fontSize: 18,
+          }}
+        >
+          Submit
+        </Text>
+      </Pressable>
+      <Text className="font-bold text-xl my-10">Tailwind Demo</Text>
       <StatusBar style="auto" />
     </View>
   );
@@ -53,5 +74,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    marginHorizontal: 20,
   },
 });
