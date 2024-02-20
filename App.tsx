@@ -13,7 +13,7 @@ export default function App() {
       >
         Gita GPT 🦚
       </Text>
-      <Text>Find wisdom in the solace of Shree Krishna</Text>
+      <Text>Find sloce in the wisdom of Shree Krishna</Text>
       <StatusBar style="auto" />
     </View>
   );
