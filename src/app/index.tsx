@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useRouter } from "expo-router";
+import { Link, router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { ScrollView, TextInput, TouchableOpacity, View } from "react-native";
@@ -10,6 +10,8 @@ import {
   commonQuestions,
   storedCachedAnswers,
 } from "../utils/constants";
+import { LoginWithGoogleButton } from "../components/LoginWithGoogleButton";
+import auth from "@react-native-firebase/auth";
 
 export default function App() {
   const [contentInput, setContentInput] = useState("");
@@ -21,7 +23,25 @@ export default function App() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showDonate, setShowDonate] = useState(false);
   const API_ENABLED = true;
-  const router = useRouter();
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState();
+
+  // Handle user state changes
+  function onAuthStateChanged(user) {
+    setUser(user);
+    if (initializing) setInitializing(false);
+  }
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+  if (initializing) return null;
+
+  if (!user) {
+    router.push("/login");
+  }
 
   const handleSubmit = async () => {
     if (audio && !audio.paused) {
@@ -173,6 +193,9 @@ export default function App() {
             <StyledText className="absolute right-0">- Krishna 🦚</StyledText>
           </View>
         )}
+        {user ? (
+          <Button title="Logout" onPress={() => auth().signOut()} />
+        ) : null}
         <StatusBar style="auto" />
       </View>
     </ScrollView>
