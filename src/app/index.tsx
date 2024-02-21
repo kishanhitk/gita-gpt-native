@@ -7,11 +7,13 @@ import Button from "../components/Button";
 import StyledText from "../components/StyledText";
 import {
   EXPO_PUBLIC_API_BASE_URL,
+  FLUTE_AUDIO_URL,
   commonQuestions,
   storedCachedAnswers,
 } from "../utils/constants";
 import auth from "@react-native-firebase/auth";
 import axios from "axios";
+import { Audio } from "expo-av";
 
 export default function App() {
   const [contentInput, setContentInput] = useState("");
@@ -25,8 +27,31 @@ export default function App() {
   const API_ENABLED = true;
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
+  const [sound, setSound] = useState<Audio.Sound | null>(null);
 
-  // Handle user state changes
+  async function playSound() {
+    console.log("Loading Sound");
+    const { sound } = await Audio.Sound.createAsync(
+      require("../../assets/flute.mp3")
+      // {
+      //   uri: FLUTE_AUDIO_URL,
+      // }
+    );
+    console.log("Playing Sound", sound);
+    setSound(sound);
+
+    await sound.playAsync();
+  }
+
+  useEffect(() => {
+    return sound
+      ? () => {
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
+
+  // // Handle user state changes
   function onAuthStateChanged(user) {
     setUser(user);
     if (initializing) setInitializing(false);
@@ -54,66 +79,58 @@ export default function App() {
     router.push("/login");
   }
 
-  const handleSubmit = async () => {
-    if (audio && !audio.paused) {
-      audio.play();
-      setIsPlaying(true);
+  const getRandomAnswerFromCache = () => {
+    const cachedAnswers = storedCachedAnswers[contentInput];
+    return cachedAnswers
+      ? cachedAnswers[Math.floor(Math.random() * cachedAnswers.length)]
+      : null;
+  };
+
+  const fetchAnswerFromAPI = async () => {
+    console.log("Fetching from server", { EXPO_PUBLIC_API_BASE_URL });
+
+    const response = await axios.post(
+      `${EXPO_PUBLIC_API_BASE_URL}/generate-mobile`,
+      { contentInput },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${await getToken()}`,
+        },
+      }
+    );
+
+    if (response.status !== 200) {
+      console.error("API response error", response);
+      throw new Error(
+        response.data?.message || "Something went wrong with the API."
+      );
     }
+
+    return response.data?.message;
+  };
+
+  const handleSubmit = async () => {
     setError("");
-    const input = {
-      contentInput,
-    };
+    playSound();
     setIsLoading(true);
+
     try {
-      let textResponse;
+      let textResponse = getRandomAnswerFromCache();
 
-      if (API_ENABLED) {
-        const cachedAnswers = storedCachedAnswers[contentInput];
-
-        if (cachedAnswers) {
-          const randomAnswer =
-            cachedAnswers[Math.floor(Math.random() * cachedAnswers.length)];
-
-          textResponse = randomAnswer;
-        } else {
-          console.log("fetching from server", { EXPO_PUBLIC_API_BASE_URL });
-
-          const response = await axios.post(
-            `${EXPO_PUBLIC_API_BASE_URL}/generate-mobile`,
-            input,
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${await getToken()}`,
-              },
-            }
-          );
-          if (response.status !== 200) {
-            console.log("response Failed", response);
-            throw new Error("Something went wrong");
-          }
-
-          const data = response.data;
-          console.log("data", data);
-
-          // Assuming the API returns a text response directly
-          textResponse = await data.message;
-        }
+      if (!textResponse && API_ENABLED) {
+        textResponse = await fetchAnswerFromAPI();
       } else {
-        const cachedAnswers = storedCachedAnswers[contentInput];
-        if (cachedAnswers) {
-          const randomAnswer =
-            cachedAnswers[Math.floor(Math.random() * cachedAnswers.length)];
-          textResponse = randomAnswer;
-        } else {
-          textResponse = `Hare Krishna! The API is temporarily disabled for maintenance. Please try again after sometime. Enjoy the soothing Krishna flute in the meantime.`;
-        }
+        textResponse =
+          textResponse ||
+          `Hare Krishna! The API is temporarily disabled for maintenance. Please try again later.`;
       }
 
       setResultText(textResponse);
     } catch (error) {
       setError(
-        "You have reached the maximum number of requests for today. Please try again tomorrow."
+        error.response?.data?.message ||
+          "You have reached the maximum number of requests for today. Please try again tomorrow."
       );
     } finally {
       setIsLoading(false);
@@ -122,13 +139,13 @@ export default function App() {
 
   return (
     <ScrollView>
-      <View className="flex-1 bg-white items-center justify-center mx-5 flex-col h-screen ">
+      <View className="mx-5 h-screen flex-1 flex-col items-center justify-center bg-white ">
         <StyledText className="text-4xl">Gita GPT</StyledText>
         <StyledText
           style={{
             fontWeight: "300",
           }}
-          className="text-lg dark:text-white/80 mt-5 text-center"
+          className="mt-5 text-center text-lg dark:text-white/80"
         >
           Find solace in the wisdom of
         </StyledText>
@@ -144,13 +161,13 @@ export default function App() {
           style={{
             fontWeight: "300",
           }}
-          className="text-sm dark:text-white/40 mt-4 text-center"
+          className="mt-4 text-center text-sm dark:text-white/40"
         >
           11,56,973+ Updesh generated so far
         </StyledText>
-        <View className="flex flex-col justify-center my-10">
+        <View className="my-10 flex flex-col justify-center">
           <StyledText
-            className="text-md text-gray-900 mb-2 dark:text-white/90"
+            className="text-md mb-2 text-gray-900 dark:text-white/90"
             style={{
               fontWeight: "500",
             }}
@@ -176,7 +193,7 @@ export default function App() {
             }}
           />
 
-          <StyledText className="mt-5 -mb-2 dark:text-white/80">
+          <StyledText className="-mb-2 mt-5 dark:text-white/80">
             Or, try one of these
           </StyledText>
           <View
@@ -191,7 +208,7 @@ export default function App() {
                     setContentInput(question);
                   }}
                   key={index}
-                  className="h-10 mt-4 mr-2 shrink-0 rounded-full border border-gray-100 bg-gray-200 px-4 py-2 text-sm  text-gray-900 dark:border-none dark:bg-black/30 dark:text-white/80"
+                  className="mr-2 mt-4 h-10 shrink-0 rounded-full border border-gray-100 bg-gray-200 px-4 py-2 text-sm  text-gray-900 dark:border-none dark:bg-black/30 dark:text-white/80"
                 >
                   <StyledText
                     style={{
