@@ -63,3 +63,5 @@ export const commonQuestions = [
 type CachedAnswerType = {
   [key: string]: string[];
 };
+
+export const API_BASE_URL = "https://gita.kishans.in/api";

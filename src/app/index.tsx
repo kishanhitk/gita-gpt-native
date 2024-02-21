@@ -5,7 +5,11 @@ import StyledText from "../components/StyledText";
 import clsx from "clsx";
 
 import React, { FormEvent, useRef, useState } from "react";
-import { commonQuestions, storedCachedAnswers } from "../utils/constants";
+import {
+  API_BASE_URL,
+  commonQuestions,
+  storedCachedAnswers,
+} from "../utils/constants";
 import { useRouter } from "expo-router";
 
 export default function App() {
@@ -21,7 +25,7 @@ export default function App() {
   const router = useRouter();
 
   const handleSubmit = async () => {
-    if (audio?.paused) {
+    if (audio && !audio.paused) {
       audio.play();
       setIsPlaying(true);
     }
@@ -31,9 +35,8 @@ export default function App() {
     };
     setIsLoading(true);
     try {
-      let stream;
+      let textResponse;
 
-      console.log("API_ENABLED", API_ENABLED);
       if (API_ENABLED) {
         const cachedAnswers = storedCachedAnswers[contentInput];
 
@@ -41,72 +44,36 @@ export default function App() {
           const randomAnswer =
             cachedAnswers[Math.floor(Math.random() * cachedAnswers.length)];
 
-          console.log("randomAnswer", randomAnswer);
-          stream = new ReadableStream({
-            async start(controller) {
-              console.log("Starting stream");
-              const text = randomAnswer;
-              for (let i = 0; i < text.length; i++) {
-                console.log("text[i]", text[i]);
-                await new Promise((r) => setTimeout(r, 40));
-                controller.enqueue(new TextEncoder().encode(text[i]));
-              }
-              controller.close();
-            },
-          });
+          textResponse = randomAnswer;
         } else {
           // Send the data to the server
-          const response = await fetch("/api/generate", {
+          const response = await fetch(`${API_BASE_URL}/generate`, {
             method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
             body: JSON.stringify(input),
           });
+
           // Check if the response is successful
           if (!response.ok) {
             throw new Error("Something went wrong");
           }
-          // This data is a ReadableStream
-          stream = response.body;
-          if (!stream) {
-            return;
-          }
+          // Assuming the API returns a text response directly
+          textResponse = await response.text();
         }
       } else {
-        stream = new ReadableStream({
-          async start(controller) {
-            let text = "";
-            const cachedAnswers = storedCachedAnswers[contentInput];
-            if (cachedAnswers) {
-              const randomAnswer =
-                cachedAnswers[Math.floor(Math.random() * cachedAnswers.length)];
-              text = randomAnswer;
-            } else {
-              text = `Hare Krishna! \n The API is temporarily disabled for maintenance. Please try again after sometime. \n Enjoy the soothing Krishna flute in the meantime.`;
-            }
-
-            for (let i = 0; i < text.length; i++) {
-              await new Promise((r) => setTimeout(r, 40));
-              controller.enqueue(new TextEncoder().encode(text[i]));
-            }
-            controller.close();
-          },
-        });
+        const cachedAnswers = storedCachedAnswers[contentInput];
+        if (cachedAnswers) {
+          const randomAnswer =
+            cachedAnswers[Math.floor(Math.random() * cachedAnswers.length)];
+          textResponse = randomAnswer;
+        } else {
+          textResponse = `Hare Krishna! The API is temporarily disabled for maintenance. Please try again after sometime. Enjoy the soothing Krishna flute in the meantime.`;
+        }
       }
 
-      setResultText("");
-
-      console.log("Before getReader", stream);
-      const reader = stream.getReader();
-      console.log("After getReader", reader);
-      const decoder = new TextDecoder();
-      let done = false;
-
-      while (!done) {
-        const { value, done: doneReading } = await reader.read();
-        done = doneReading;
-        const chunkValue = decoder.decode(value);
-        setResultText((prev) => prev + chunkValue);
-        afterResultTextRef.current?.scrollIntoView({ behavior: "smooth" });
-      }
+      setResultText(textResponse);
     } catch (error) {
       setError(
         "You have reached the maximum number of requests for today. Please try again tomorrow."
@@ -117,98 +84,98 @@ export default function App() {
   };
 
   return (
-    <View className="flex-1 bg-white items-center justify-center mx-5 flex-col h-screen ">
-      <StyledText className="text-4xl">Gita GPT</StyledText>
-      <StyledText
-        style={{
-          fontWeight: "300",
-        }}
-        className="text-lg dark:text-white/80 mt-5 text-center"
-      >
-        Find solace in the wisdom of
-      </StyledText>
-      <StyledText
-        style={{
-          fontWeight: "500",
-        }}
-        className="my-2 text-xl"
-      >
-        Shree Krishna 🦚
-      </StyledText>
-      <StyledText
-        style={{
-          fontWeight: "300",
-        }}
-        className="text-sm dark:text-white/40 mt-4 text-center"
-      >
-        11,56,973+ Updesh generated so far
-      </StyledText>
-      <View className="flex flex-col justify-center my-10">
+    <ScrollView>
+      <View className="flex-1 bg-white items-center justify-center mx-5 flex-col h-screen ">
+        <StyledText className="text-4xl">Gita GPT</StyledText>
         <StyledText
-          className="text-md text-gray-900 mb-2 dark:text-white/90"
+          style={{
+            fontWeight: "300",
+          }}
+          className="text-lg dark:text-white/80 mt-5 text-center"
+        >
+          Find solace in the wisdom of
+        </StyledText>
+        <StyledText
           style={{
             fontWeight: "500",
           }}
+          className="my-2 text-xl"
         >
-          Arjuna, what troubles you, my friend?
+          Shree Krishna 🦚
         </StyledText>
-        <TextInput
-          placeholder="How can I find inner peace in the midst of chaos?"
-          className={clsx(
-            "text-md rounded-md border border-gray-100 bg-gray-100 px-4 py-2 text-black",
-            "dark:border-none dark:bg-white/10 dark:text-white"
-          )}
-          multiline
-          numberOfLines={2}
-          value={contentInput}
-          onChangeText={(text) => setContentInput(text)}
-        />
-
-        <Button
-          title="Ask Krishna"
-          onPress={(e) => {
-            handleSubmit();
-          }}
-        />
-
-        <StyledText className="mt-5 -mb-2 dark:text-white/80">
-          Or, try one of these
-        </StyledText>
-        <View
+        <StyledText
           style={{
-            height: 50,
+            fontWeight: "300",
           }}
+          className="text-sm dark:text-white/40 mt-4 text-center"
         >
-          <ScrollView horizontal>
-            {commonQuestions.map((question, index) => (
-              <TouchableOpacity
-                onPress={() => {
-                  setContentInput(question);
-                }}
-                key={index}
-                className="h-10 mt-4 mr-2 shrink-0 rounded-full border border-gray-100 bg-gray-200 px-4 py-2 text-sm  text-gray-900 dark:border-none dark:bg-black/30 dark:text-white/80"
-              >
-                <StyledText
-                  style={{
-                    fontWeight: "600",
-                  }}
-                >
-                  {question}
-                </StyledText>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </View>
-      </View>
-      {resultText && (
-        <StyledText className="relative  mb-20 rounded-lg border border-gray-50 bg-gray-100 p-5  pb-10 dark:border-none dark:bg-black/30 dark:text-white/90">
-          {resultText}
-          <StyledText className="absolute bottom-2 right-8">
-            - Krishna 🦚
-          </StyledText>
+          11,56,973+ Updesh generated so far
         </StyledText>
-      )}
-      <StatusBar style="auto" />
-    </View>
+        <View className="flex flex-col justify-center my-10">
+          <StyledText
+            className="text-md text-gray-900 mb-2 dark:text-white/90"
+            style={{
+              fontWeight: "500",
+            }}
+          >
+            Arjuna, what troubles you, my friend?
+          </StyledText>
+          <TextInput
+            placeholder="How can I find inner peace in the midst of chaos?"
+            className={clsx(
+              "text-md rounded-md border border-gray-100 bg-gray-100 px-4 py-2 text-black",
+              "dark:border-none dark:bg-white/10 dark:text-white"
+            )}
+            multiline
+            numberOfLines={2}
+            value={contentInput}
+            onChangeText={(text) => setContentInput(text)}
+          />
+
+          <Button
+            title="Ask Krishna"
+            onPress={(e) => {
+              handleSubmit();
+            }}
+          />
+
+          <StyledText className="mt-5 -mb-2 dark:text-white/80">
+            Or, try one of these
+          </StyledText>
+          <View
+            style={{
+              height: 50,
+            }}
+          >
+            <ScrollView horizontal>
+              {commonQuestions.map((question, index) => (
+                <TouchableOpacity
+                  onPress={() => {
+                    setContentInput(question);
+                  }}
+                  key={index}
+                  className="h-10 mt-4 mr-2 shrink-0 rounded-full border border-gray-100 bg-gray-200 px-4 py-2 text-sm  text-gray-900 dark:border-none dark:bg-black/30 dark:text-white/80"
+                >
+                  <StyledText
+                    style={{
+                      fontWeight: "600",
+                    }}
+                  >
+                    {question}
+                  </StyledText>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
+        </View>
+        {resultText && (
+          <View className="relative rounded-lg border border-gray-50 bg-gray-100 p-5  pb-10 dark:border-none dark:bg-black/30 dark:text-white/90">
+            <StyledText>{resultText}</StyledText>
+            <StyledText className="absolute right-0">- Krishna 🦚</StyledText>
+          </View>
+        )}
+        <StatusBar style="auto" />
+      </View>
+    </ScrollView>
   );
 }
