@@ -16,6 +16,7 @@
     "@react-native-firebase/database": "^18.8.0",
     "@react-native-google-signin/google-signin": "^11.0.0",
     "@types/react": "~18.2.45",
+    "axios": "^1.6.7",
     "clsx": "^2.1.0",
     "expo": "~50.0.7",
     "expo-constants": "~15.4.5",

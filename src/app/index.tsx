@@ -1,17 +1,17 @@
 import clsx from "clsx";
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import React, { FormEvent, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ScrollView, TextInput, TouchableOpacity, View } from "react-native";
 import Button from "../components/Button";
 import StyledText from "../components/StyledText";
 import {
-  API_BASE_URL,
+  EXPO_PUBLIC_API_BASE_URL,
   commonQuestions,
   storedCachedAnswers,
 } from "../utils/constants";
-import { LoginWithGoogleButton } from "../components/LoginWithGoogleButton";
 import auth from "@react-native-firebase/auth";
+import axios from "axios";
 
 export default function App() {
   const [contentInput, setContentInput] = useState("");
@@ -32,8 +32,19 @@ export default function App() {
     if (initializing) setInitializing(false);
   }
 
+  const getToken = async () => {
+    const user = auth().currentUser;
+    if (user) {
+      console.log("User is signed in");
+      const token = await user.getIdToken();
+      return token;
+    }
+    return null;
+  };
+
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    getToken();
     return subscriber; // unsubscribe on unmount
   }, []);
 
@@ -65,21 +76,28 @@ export default function App() {
 
           textResponse = randomAnswer;
         } else {
-          // Send the data to the server
-          const response = await fetch(`${API_BASE_URL}/generate`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(input),
-          });
+          console.log("fetching from server", { EXPO_PUBLIC_API_BASE_URL });
 
-          // Check if the response is successful
-          if (!response.ok) {
+          const response = await axios.post(
+            `${EXPO_PUBLIC_API_BASE_URL}/generate-mobile`,
+            input,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${await getToken()}`,
+              },
+            }
+          );
+          if (response.status !== 200) {
+            console.log("response Failed", response);
             throw new Error("Something went wrong");
           }
+
+          const data = response.data;
+          console.log("data", data);
+
           // Assuming the API returns a text response directly
-          textResponse = await response.text();
+          textResponse = await data.message;
         }
       } else {
         const cachedAnswers = storedCachedAnswers[contentInput];
