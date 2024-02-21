@@ -1,16 +1,15 @@
+import clsx from "clsx";
+import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { ScrollView, TextInput, TouchableOpacity, View } from "react-native";
 import Button from "../components/Button";
 import StyledText from "../components/StyledText";
-import clsx from "clsx";
-
-import React, { FormEvent, useRef, useState } from "react";
 import {
   API_BASE_URL,
   commonQuestions,
   storedCachedAnswers,
 } from "../utils/constants";
-import { useRouter } from "expo-router";
 
 export default function App() {
   const [contentInput, setContentInput] = useState("");

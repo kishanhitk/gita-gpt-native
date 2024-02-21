@@ -1,4 +1,4 @@
-package com.kishans.gitgpt
+package com.kishans.gitagpt
 
 import android.os.Build
 import android.os.Bundle

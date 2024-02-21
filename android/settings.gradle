@@ -1,4 +1,4 @@
-rootProject.name = 'gita-gpt-native'
+rootProject.name = 'Gita GPT'
 
 dependencyResolutionManagement {
   versionCatalogs {
