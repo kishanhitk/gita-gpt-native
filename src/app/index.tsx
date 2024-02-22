@@ -2,13 +2,7 @@ import clsx from "clsx";
 import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useRef, useState } from "react";
-import {
-  ScrollView,
-  TextInput,
-  TouchableOpacity,
-  View,
-  Text,
-} from "react-native";
+import { ScrollView, TextInput, TouchableOpacity, View } from "react-native";
 import Button from "../components/Button";
 import StyledText from "../components/StyledText";
 import {
@@ -21,6 +15,7 @@ import axios from "axios";
 import { Audio } from "expo-av";
 import { FontAwesome5 } from "@expo/vector-icons";
 import QuotaInfo from "../components/QuotaInfo";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Index() {
   const [contentInput, setContentInput] = useState("");
@@ -35,6 +30,19 @@ export default function Index() {
   const [sound, setSound] = useState<Audio.Sound | null>(null);
   const [isMuted, setIsMuted] = useState(false);
 
+  useEffect(() => {
+    AsyncStorage.getItem("isMuted")
+      .then((value) => {
+        if (value === null) {
+          return;
+        }
+        setIsMuted(value === "true");
+      })
+      .catch((error) => {
+        console.error("Error getting isMuted from AsyncStorage", error);
+      });
+  }, []);
+
   async function playSound() {
     if (sound) {
       return;
@@ -44,6 +52,7 @@ export default function Index() {
     );
     setSound(createdSound);
     await createdSound.playAsync();
+    console.log("Playing Sound", createdSound);
   }
 
   useEffect(() => {
@@ -110,6 +119,7 @@ export default function Index() {
 
   const handleSubmit = async () => {
     setError("");
+    console.log("isMuted", isMuted);
     if (!isMuted) {
       playSound();
     }
@@ -146,6 +156,7 @@ export default function Index() {
         <TouchableOpacity
           onPress={async () => {
             setIsMuted(!isMuted);
+            await AsyncStorage.setItem("isMuted", (!isMuted).toString());
             if (isMuted) {
               if (sound) {
                 await sound?.playAsync();
@@ -199,6 +210,9 @@ export default function Index() {
             Arjuna, what troubles you, my friend?
           </StyledText>
           <TextInput
+            style={{
+              fontFamily: "Quicksand_400Regular",
+            }}
             placeholder="How can I find inner peace in the midst of chaos?"
             className={clsx(
               "text-md rounded-md border border-gray-100 bg-gray-100 px-4 py-2 text-black",
