@@ -11,7 +11,7 @@
     "preview": {
       "env": {
         "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "563786112721-ff60ev58euuuuv3qoht8busvve2e7pf5.apps.googleusercontent.com",
-        "EXPO_PUBLIC_API_BASE_URL": "https://gita-9s4lk4zh5-kishanhitk.vercel.app"
+        "EXPO_PUBLIC_API_BASE_URL": "https://gita.kishans.in/api"
       },
       "distribution": "internal"
     },
@@ -19,7 +19,7 @@
       "autoIncrement": true,
       "env": {
         "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "563786112721-ff60ev58euuuuv3qoht8busvve2e7pf5.apps.googleusercontent.com",
-        "EXPO_PUBLIC_API_BASE_URL": "https://gita-9s4lk4zh5-kishanhitk.vercel.app"
+        "EXPO_PUBLIC_API_BASE_URL": "https://gita.kishans.in/api"
       }
     }
   },

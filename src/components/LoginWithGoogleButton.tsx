@@ -33,10 +33,14 @@ export const LoginWithGoogleButton = () => {
       }}
       className="w-full my-10"
       onPress={() =>
-        onGoogleButtonPress().then(() => {
-          console.log("Signed in with Google!");
-          router.replace("/");
-        })
+        onGoogleButtonPress()
+          .then(() => {
+            console.log("Signed in with Google!");
+            router.replace("/");
+          })
+          .catch((error) => {
+            console.error("Error signing in with Google", error);
+          })
       }
     />
   );

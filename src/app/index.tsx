@@ -163,7 +163,6 @@ export default function Index() {
             <FontAwesome5 name="volume-mute" size={24} color="gray" />
           )}
         </TouchableOpacity>
-        <Text>Is Muted: {isMuted.toString()}</Text>
         <StyledText className="text-4xl">Gita GPT</StyledText>
         <StyledText
           style={{
