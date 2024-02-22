@@ -35,3 +35,14 @@ yarn-error.*
 *.tsbuildinfo
 .env
 build-1708530414677.apk
+
+
+# Android directories
+android/
+
+# iOS directories
+ios/
+
+# APK build files
+*.apk
+*.aab
