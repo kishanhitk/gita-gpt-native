@@ -7,7 +7,6 @@ import Button from "../components/Button";
 import StyledText from "../components/StyledText";
 import {
   EXPO_PUBLIC_API_BASE_URL,
-  FLUTE_AUDIO_URL,
   commonQuestions,
   storedCachedAnswers,
 } from "../utils/constants";
@@ -21,8 +20,6 @@ export default function App() {
   const [resultText, setResultText] = useState("");
   const [error, setError] = useState("");
   const afterResultTextRef = useRef<HTMLDivElement>(null);
-  const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [showDonate, setShowDonate] = useState(false);
   const API_ENABLED = true;
   const [initializing, setInitializing] = useState(true);
@@ -30,12 +27,8 @@ export default function App() {
   const [sound, setSound] = useState<Audio.Sound | null>(null);
 
   async function playSound() {
-    console.log("Loading Sound");
     const { sound } = await Audio.Sound.createAsync(
       require("../../assets/flute.mp3")
-      // {
-      //   uri: FLUTE_AUDIO_URL,
-      // }
     );
     console.log("Playing Sound", sound);
     setSound(sound);
@@ -51,7 +44,6 @@ export default function App() {
       : undefined;
   }, [sound]);
 
-  // // Handle user state changes
   function onAuthStateChanged(user) {
     setUser(user);
     if (initializing) setInitializing(false);
@@ -60,7 +52,6 @@ export default function App() {
   const getToken = async () => {
     const user = auth().currentUser;
     if (user) {
-      console.log("User is signed in");
       const token = await user.getIdToken();
       return token;
     }
@@ -87,8 +78,6 @@ export default function App() {
   };
 
   const fetchAnswerFromAPI = async () => {
-    console.log("Fetching from server", { EXPO_PUBLIC_API_BASE_URL });
-
     const response = await axios.post(
       `${EXPO_PUBLIC_API_BASE_URL}/generate-mobile`,
       { contentInput },
@@ -187,6 +176,7 @@ export default function App() {
           />
 
           <Button
+            isLoading={isLoading}
             title="Ask Krishna"
             onPress={(e) => {
               handleSubmit();
