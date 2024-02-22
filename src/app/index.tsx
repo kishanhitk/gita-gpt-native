@@ -21,7 +21,7 @@ import axios from "axios";
 import { Audio } from "expo-av";
 import { FontAwesome5 } from "@expo/vector-icons";
 
-export default function App() {
+export default function Index() {
   const [contentInput, setContentInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [resultText, setResultText] = useState("");
@@ -69,15 +69,14 @@ export default function App() {
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    getToken();
     return subscriber; // unsubscribe on unmount
   }, []);
 
-  if (initializing) return null;
-
-  if (!user) {
-    router.push("/login");
-  }
+  useEffect(() => {
+    if (!initializing && !user) {
+      router.push("/login");
+    }
+  }, [initializing, user]);
 
   const getRandomAnswerFromCache = () => {
     const cachedAnswers = storedCachedAnswers[contentInput];
@@ -136,6 +135,8 @@ export default function App() {
       setIsLoading(false);
     }
   };
+
+  if (initializing) return null;
 
   return (
     <ScrollView className="bg-white">
