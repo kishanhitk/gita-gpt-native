@@ -26,6 +26,7 @@ export const LoginWithGoogleButton = () => {
 
   return (
     <Button
+      iconSrc={require("../../assets/google-logo.png")}
       title="Continue with Google"
       style={{
         width: "100%",

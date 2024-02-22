@@ -2,7 +2,13 @@ import clsx from "clsx";
 import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useRef, useState } from "react";
-import { ScrollView, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+  View,
+  Text,
+} from "react-native";
 import Button from "../components/Button";
 import StyledText from "../components/StyledText";
 import {
@@ -13,6 +19,7 @@ import {
 import auth from "@react-native-firebase/auth";
 import axios from "axios";
 import { Audio } from "expo-av";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 export default function App() {
   const [contentInput, setContentInput] = useState("");
@@ -25,15 +32,17 @@ export default function App() {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
   const [sound, setSound] = useState<Audio.Sound | null>(null);
+  const [isMuted, setIsMuted] = useState(false);
 
   async function playSound() {
-    const { sound } = await Audio.Sound.createAsync(
+    if (sound) {
+      return;
+    }
+    const { sound: createdSound } = await Audio.Sound.createAsync(
       require("../../assets/flute.mp3")
     );
-    console.log("Playing Sound", sound);
-    setSound(sound);
-
-    await sound.playAsync();
+    setSound(createdSound);
+    await createdSound.playAsync();
   }
 
   useEffect(() => {
@@ -101,7 +110,9 @@ export default function App() {
 
   const handleSubmit = async () => {
     setError("");
-    playSound();
+    if (!isMuted) {
+      playSound();
+    }
     setIsLoading(true);
 
     try {
@@ -129,6 +140,29 @@ export default function App() {
   return (
     <ScrollView>
       <View className="mx-5 h-screen flex-1 flex-col items-center justify-center bg-white ">
+        {/* Mute Button */}
+        <TouchableOpacity
+          onPress={async () => {
+            setIsMuted(!isMuted);
+            if (isMuted) {
+              if (sound) {
+                await sound?.playAsync();
+              } else {
+                await playSound();
+              }
+            } else {
+              await sound?.stopAsync();
+            }
+          }}
+          className="absolute top-10 right-5"
+        >
+          {!isMuted ? (
+            <FontAwesome5 name="volume-up" size={24} color="gray" />
+          ) : (
+            <FontAwesome5 name="volume-mute" size={24} color="gray" />
+          )}
+        </TouchableOpacity>
+        <Text>Is Muted: {isMuted.toString()}</Text>
         <StyledText className="text-4xl">Gita GPT</StyledText>
         <StyledText
           style={{
@@ -219,7 +253,12 @@ export default function App() {
           </View>
         )}
         {user ? (
-          <Button title="Logout" onPress={() => auth().signOut()} />
+          <TouchableOpacity
+            onPress={() => auth().signOut()}
+            className="flex flex-col items-center justify-center mt-5 bg-transparent"
+          >
+            <StyledText className="mt-5 text-sm">Logout</StyledText>
+          </TouchableOpacity>
         ) : null}
         <StatusBar style="auto" />
       </View>
