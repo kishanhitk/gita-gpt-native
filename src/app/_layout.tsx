@@ -44,6 +44,7 @@ export default function Layout() {
             fontFamily: "Quicksand_600SemiBold",
           },
           headerStyle: {
+            elevation: 0,
             backgroundColor: darkMode ? "rgba(52, 46, 84, 1)" : "white",
           },
           headerTintColor: darkMode ? "white" : "black",
