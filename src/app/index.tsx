@@ -20,6 +20,7 @@ import auth from "@react-native-firebase/auth";
 import axios from "axios";
 import { Audio } from "expo-av";
 import { FontAwesome5 } from "@expo/vector-icons";
+import QuotaInfo from "../components/QuotaInfo";
 
 export default function Index() {
   const [contentInput, setContentInput] = useState("");
@@ -140,7 +141,7 @@ export default function Index() {
 
   return (
     <ScrollView className="bg-white">
-      <View className="mx-5 h-screen flex-1 flex-col items-center justify-center bg-white ">
+      <View className="mx-5 h-screen flex-1 flex-col items-center justify-center bg-white relative">
         {/* Mute Button */}
         <TouchableOpacity
           onPress={async () => {
@@ -208,6 +209,8 @@ export default function Index() {
             value={contentInput}
             onChangeText={(text) => setContentInput(text)}
           />
+
+          <QuotaInfo />
 
           <Button
             isLoading={isLoading}
