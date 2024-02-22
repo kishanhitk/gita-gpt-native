@@ -35,7 +35,12 @@ export default function Layout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Drawer
-        screenOptions={{}}
+        screenOptions={{
+          drawerActiveBackgroundColor: "rgba(0,0,0,0.1)",
+          headerTitleStyle: {
+            fontFamily: "Quicksand_600SemiBold",
+          },
+        }}
         drawerContent={(props) => {
           return (
             <DrawerContentScrollView
@@ -80,7 +85,7 @@ export default function Layout() {
             title: "",
             drawerLabelStyle: styles.drawerLabelStyle,
             drawerContentStyle: styles.drawerContentStyle,
-            drawerItemStyle: { backgroundColor: "rgba(0,0,0,0.1)" },
+            // drawerItemStyle: { backgroundColor: "rgba(0,0,0,0.1)" },
           }}
         />
         <Drawer.Screen
@@ -90,6 +95,16 @@ export default function Layout() {
             drawerItemStyle: { display: "none" },
             headerShown: false,
             swipeEnabled: false,
+          }}
+        />
+        <Drawer.Screen
+          name="profile"
+          options={{
+            drawerLabel: "Profile",
+            title: "Profile",
+            drawerLabelStyle: styles.drawerLabelStyle,
+            drawerContentStyle: styles.drawerContentStyle,
+            // drawerItemStyle: { backgroundColor: "rgba(0,0,0,0.1)" },
           }}
         />
       </Drawer>
