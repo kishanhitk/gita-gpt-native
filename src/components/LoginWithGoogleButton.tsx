@@ -3,6 +3,7 @@ import Button from "./Button";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import auth from "@react-native-firebase/auth";
 import { router } from "expo-router";
+import * as Haptics from "expo-haptics";
 
 export const LoginWithGoogleButton = () => {
   const [loading, setLoading] = useState(false);
@@ -37,12 +38,14 @@ export const LoginWithGoogleButton = () => {
       className="w-full my-10"
       onPress={() => {
         setLoading(true);
+        Haptics.selectionAsync();
         onGoogleButtonPress()
           .then(() => {
-            console.log("Signed in with Google!");
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
             router.push("/");
           })
           .catch((error) => {
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
             console.error("Error signing in with Google", error);
           })
           .finally(() => {

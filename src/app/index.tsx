@@ -16,6 +16,7 @@ import { Audio } from "expo-av";
 import { FontAwesome5 } from "@expo/vector-icons";
 import QuotaInfo from "../components/QuotaInfo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Haptics from "expo-haptics";
 
 export default function Index() {
   const [contentInput, setContentInput] = useState("");
@@ -52,7 +53,6 @@ export default function Index() {
     );
     setSound(createdSound);
     await createdSound.playAsync();
-    console.log("Playing Sound", createdSound);
   }
 
   useEffect(() => {
@@ -119,7 +119,7 @@ export default function Index() {
 
   const handleSubmit = async () => {
     setError("");
-    console.log("isMuted", isMuted);
+
     if (!isMuted) {
       playSound();
     }
@@ -137,6 +137,7 @@ export default function Index() {
       }
 
       setResultText(textResponse);
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     } catch (error) {
       setError(
         error.response?.data?.message ||
@@ -155,6 +156,7 @@ export default function Index() {
         {/* Mute Button */}
         <TouchableOpacity
           onPress={async () => {
+            Haptics.selectionAsync();
             setIsMuted(!isMuted);
             await AsyncStorage.setItem("isMuted", (!isMuted).toString());
             if (isMuted) {
@@ -230,6 +232,7 @@ export default function Index() {
             isLoading={isLoading}
             title="Ask Krishna"
             onPress={(e) => {
+              Haptics.selectionAsync();
               handleSubmit();
             }}
           />
