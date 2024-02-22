@@ -38,8 +38,9 @@ const Button: React.FC<ButtonProps> = ({
           {iconSrc && (
             <Image
               source={iconSrc}
-              className="w-5 h-5"
               style={{
+                height: 20,
+                width: 20,
                 marginRight: 10,
               }}
             />
