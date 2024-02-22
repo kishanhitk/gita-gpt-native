@@ -46,3 +46,5 @@ ios/
 # APK build files
 *.apk
 *.aab
+
+play-store-service.json

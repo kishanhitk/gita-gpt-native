@@ -21,7 +21,6 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.kishans.gitagpt",
-      "versionCode": 1,
       "googleServicesFile": "./google-services.json",
       "permissions": ["RECORD_AUDIO"]
     },
