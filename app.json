@@ -41,7 +41,8 @@
       },
       "eas": {
         "projectId": "3039adc9-b915-482c-b15c-d0426274cbdb"
-      }
+      },
+      "scheme": "gitagpt"
     }
   }
 }
