@@ -255,14 +255,6 @@ export default function Index() {
             <StyledText className="absolute right-0">- Krishna 🦚</StyledText>
           </View>
         )}
-        {user ? (
-          <TouchableOpacity
-            onPress={() => auth().signOut()}
-            className="flex flex-col items-center justify-center mt-5 bg-transparent"
-          >
-            <StyledText className="mt-5 text-sm">Logout</StyledText>
-          </TouchableOpacity>
-        ) : null}
         <StatusBar style="auto" />
       </View>
     </ScrollView>

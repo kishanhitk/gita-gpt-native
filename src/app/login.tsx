@@ -5,7 +5,7 @@ import { StatusBar } from "expo-status-bar";
 
 const Index = () => {
   return (
-    <ScrollView>
+    <ScrollView className="bg-white">
       <View className="flex-1 bg-white items-center justify-center mx-5 flex-col h-screen">
         <StyledText className="text-4xl">Gita GPT</StyledText>
         <StyledText

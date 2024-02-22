@@ -36,7 +36,7 @@ export const LoginWithGoogleButton = () => {
         onGoogleButtonPress()
           .then(() => {
             console.log("Signed in with Google!");
-            router.replace("/");
+            router.push("/");
           })
           .catch((error) => {
             console.error("Error signing in with Google", error);

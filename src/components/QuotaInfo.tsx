@@ -19,8 +19,11 @@ const QuotaInfo = () => {
       });
     }
 
-    return () =>
-      database().ref(`/rate-limiter/${user.uid}/${date}`).off("value");
+    return () => {
+      if (user) {
+        database().ref(`/rate-limiter/${user.uid}/${date}`).off("value");
+      }
+    };
   }, [user]);
 
   return user ? (
