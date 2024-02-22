@@ -24,5 +24,3 @@ export default function Layout() {
   }
   return <Slot />;
 }
-
-// export default Slot;

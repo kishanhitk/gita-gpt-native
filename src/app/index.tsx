@@ -139,7 +139,7 @@ export default function App() {
 
   return (
     <ScrollView>
-      <View className="mx-5 h-screen flex-1 flex-col items-center justify-center bg-white ">
+      <View className="px-5 h-screen flex-1 flex-col items-center justify-center bg-white ">
         {/* Mute Button */}
         <TouchableOpacity
           onPress={async () => {
