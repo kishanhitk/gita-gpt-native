@@ -5,9 +5,9 @@ import { StatusBar } from "expo-status-bar";
 
 const Index = () => {
   return (
-    <ScrollView className="bg-white">
-      <View className="flex-1 bg-white items-center justify-center mx-5 flex-col h-screen">
-        <StyledText className="text-4xl">Gita GPT</StyledText>
+    <ScrollView className="bg-white dark:dark:bg-[#393358]">
+      <View className="flex-1 items-center justify-center mx-5 flex-col h-screen">
+        <StyledText className="text-4xl dark:text-white">Gita GPT</StyledText>
         <StyledText
           style={{
             fontWeight: "300",
@@ -20,7 +20,7 @@ const Index = () => {
           style={{
             fontWeight: "500",
           }}
-          className="my-2 text-xl"
+          className="my-2 text-xl dark:text-white/80"
         >
           Shree Krishna 🦚
         </StyledText>
@@ -28,7 +28,7 @@ const Index = () => {
           style={{
             fontWeight: "300",
           }}
-          className="text-sm dark:text-white/40 mt-4 text-center"
+          className="text-sm dark:text-white/70 mt-4 text-center"
         >
           11,56,973+ Updesh generated so far
         </StyledText>

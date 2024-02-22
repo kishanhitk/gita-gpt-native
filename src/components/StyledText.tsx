@@ -1,5 +1,6 @@
 import { View, Text } from "react-native";
 import React from "react";
+import clsx from "clsx";
 
 interface StyledTextProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
@@ -9,7 +10,7 @@ const StyledText = ({ children, style, className }: StyledTextProps) => {
   return (
     <View>
       <Text
-        className={className}
+        className={clsx("dark:text-white/80", className)}
         style={{
           ...style,
           fontFamily:

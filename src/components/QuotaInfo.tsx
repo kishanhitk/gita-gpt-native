@@ -3,6 +3,7 @@ import { RATE_LIMIT } from "../utils/constants";
 import auth from "@react-native-firebase/auth";
 import database from "@react-native-firebase/database";
 import { Text } from "react-native";
+import StyledText from "./StyledText";
 
 const QuotaInfo = () => {
   const user = auth().currentUser;
@@ -27,9 +28,9 @@ const QuotaInfo = () => {
   }, [user]);
 
   return user ? (
-    <Text className="mt-2 text-right text-sm font-light">
+    <StyledText className="mt-2 text-right text-sm font-light dark:text-white/60">
       {RATE_LIMIT - used}/{RATE_LIMIT} questions left.
-    </Text>
+    </StyledText>
   ) : null;
 };
 

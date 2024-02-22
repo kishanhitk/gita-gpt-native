@@ -2,7 +2,13 @@ import clsx from "clsx";
 import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useRef, useState } from "react";
-import { ScrollView, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+  View,
+  useColorScheme,
+} from "react-native";
 import Button from "../components/Button";
 import StyledText from "../components/StyledText";
 import {
@@ -30,6 +36,8 @@ export default function Index() {
   const [user, setUser] = useState();
   const [sound, setSound] = useState<Audio.Sound | null>(null);
   const [isMuted, setIsMuted] = useState(false);
+  let colorScheme = useColorScheme();
+  const darkMode = colorScheme === "dark";
 
   useEffect(() => {
     AsyncStorage.getItem("isMuted")
@@ -151,9 +159,8 @@ export default function Index() {
   if (initializing) return null;
 
   return (
-    <ScrollView className="bg-white">
-      <View className="mx-5 h-screen flex-1 flex-col items-center justify-center bg-white relative">
-        {/* Mute Button */}
+    <ScrollView className="bg-white dark:bg-darkBlue">
+      <View className="mx-5 h-screen flex-1 flex-col items-center justify-center relative">
         <TouchableOpacity
           onPress={async () => {
             Haptics.selectionAsync();
@@ -172,12 +179,20 @@ export default function Index() {
           className="absolute top-10 right-5"
         >
           {!isMuted ? (
-            <FontAwesome5 name="volume-up" size={24} color="gray" />
+            <FontAwesome5
+              name="volume-up"
+              size={24}
+              color={darkMode ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.6)"}
+            />
           ) : (
-            <FontAwesome5 name="volume-mute" size={24} color="gray" />
+            <FontAwesome5
+              name="volume-mute"
+              size={24}
+              color={darkMode ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.6)"}
+            />
           )}
         </TouchableOpacity>
-        <StyledText className="text-4xl">Gita GPT</StyledText>
+        <StyledText className="text-4xl dark:text-white">Gita GPT</StyledText>
         <StyledText
           style={{
             fontWeight: "300",
@@ -190,7 +205,7 @@ export default function Index() {
           style={{
             fontWeight: "500",
           }}
-          className="my-2 text-xl"
+          className="my-2 text-xl dark:text-white/80"
         >
           Shree Krishna 🦚
         </StyledText>
@@ -198,7 +213,7 @@ export default function Index() {
           style={{
             fontWeight: "300",
           }}
-          className="mt-4 text-center text-sm dark:text-white/40"
+          className="mt-4 text-center text-sm dark:text-white/70"
         >
           11,56,973+ Updesh generated so far
         </StyledText>
@@ -217,8 +232,8 @@ export default function Index() {
             }}
             placeholder="How can I find inner peace in the midst of chaos?"
             className={clsx(
-              "text-md rounded-md border border-gray-100 bg-gray-100 px-4 py-2 text-black",
-              "dark:border-none dark:bg-white/10 dark:text-white"
+              "text-md rounded-md border border-gray-100  bg-gray-100 px-4 py-2 text-black",
+              "dark:border-0 dark:bg-white/10 dark:text-white dark:placeholder:text-white/50"
             )}
             multiline
             numberOfLines={2}
@@ -252,12 +267,13 @@ export default function Index() {
                     setContentInput(question);
                   }}
                   key={index}
-                  className="mr-2 mt-4 h-10 shrink-0 rounded-full border border-gray-100 bg-gray-200 px-4 py-2 text-sm  text-gray-900 dark:border-none dark:bg-black/30 dark:text-white/80"
+                  className="mr-2 mt-4 h-10 shrink-0 rounded-full border border-gray-100 bg-gray-200 px-4 py-2 text-sm  text-gray-900 dark:border-0 dark:bg-black/30 "
                 >
                   <StyledText
                     style={{
                       fontWeight: "600",
                     }}
+                    className="dark:text-white/80"
                   >
                     {question}
                   </StyledText>

@@ -1,4 +1,4 @@
-import { View, Image, Pressable } from "react-native";
+import { View, Image, Pressable, useColorScheme } from "react-native";
 import React, { useEffect, useState } from "react";
 import StyledText from "../components/StyledText";
 import auth from "@react-native-firebase/auth";
@@ -10,6 +10,8 @@ const Profile = () => {
   const user = auth().currentUser;
   const [used, setUsed] = useState(0);
   const [totalUsed, setTotalUsed] = useState(0);
+  let colorScheme = useColorScheme();
+  const darkMode = colorScheme === "dark";
 
   useEffect(() => {
     const date = new Date().toISOString().split("T")[0];
@@ -49,10 +51,11 @@ const Profile = () => {
   }, [user]);
 
   return (
-    <View className="bg-white">
+    <View className="bg-white dark:bg-darkBlue">
       <View className="m-10 h-full">
         <Image
           source={{ uri: user.photoURL }}
+          className="dark:border-2 dark:border-white/80"
           style={{
             width: 80,
             height: 80,
@@ -69,6 +72,7 @@ const Profile = () => {
           }}
         >
           <StyledText
+            className="dark:text-white/80"
             style={{
               textAlign: "center",
               fontSize: 15,
@@ -77,7 +81,10 @@ const Profile = () => {
           >
             Name:
           </StyledText>
-          <StyledText style={{ textAlign: "center", fontSize: 15 }}>
+          <StyledText
+            style={{ textAlign: "center", fontSize: 15 }}
+            className="dark:text-white/80"
+          >
             {user.displayName}
           </StyledText>
         </View>
@@ -194,10 +201,10 @@ const Profile = () => {
               {new Date(user.metadata.creationTime).toDateString()}
             </StyledText>
             <StyledText
+              className="dark:text-white/60 text-black/60"
               style={{
                 textAlign: "center",
                 fontSize: 15,
-                color: "rgba(0,0,0,0.6)",
               }}
             >
               {Math.floor(
@@ -211,27 +218,31 @@ const Profile = () => {
         </View>
 
         <StyledText
+          className="text-black/60 dark:text-white/80"
           style={{
             textAlign: "left",
             fontSize: 12,
             marginTop: 40,
-            color: "rgba(0,0,0,0.6)",
           }}
         >
-          <FontAwesome5 name="info-circle" size={10} color="rgba(0,0,0,0.6)" />{" "}
+          <FontAwesome5
+            name="info-circle"
+            size={10}
+            color={darkMode ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.6)"}
+          />{" "}
           No information is shared publicly. All your chats are private.
         </StyledText>
         <View
           style={{
-            flexGrow: 1,
+            flexGrow: 0.5,
           }}
         ></View>
         <Pressable onPress={() => auth().signOut()}>
           <StyledText
+            className=" text-black/60 dark:text-white/80"
             style={{
               textAlign: "center",
               fontSize: 12,
-              color: "rgba(0,0,0,0.6)",
               marginTop: "auto",
               alignSelf: "center",
               placeSelf: "flex-end",

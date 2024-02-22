@@ -9,8 +9,8 @@ import {
 import { useFonts } from "expo-font";
 import React from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Drawer } from "expo-router/drawer";
-import { StyleSheet, View, Image } from "react-native";
+import drawer, { Drawer } from "expo-router/drawer";
+import { StyleSheet, View, Image, useColorScheme } from "react-native";
 import {
   DrawerContentScrollView,
   DrawerItem,
@@ -20,6 +20,8 @@ import auth from "@react-native-firebase/auth";
 import StyledText from "../components/StyledText";
 
 export default function Layout() {
+  let colorScheme = useColorScheme();
+  const darkMode = colorScheme === "dark";
   let [fontsLoaded, fontError] = useFonts({
     Quicksand_300Light,
     Quicksand_400Regular,
@@ -36,10 +38,21 @@ export default function Layout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Drawer
         screenOptions={{
+          drawerType: "slide",
           drawerActiveBackgroundColor: "rgba(0,0,0,0.1)",
           headerTitleStyle: {
             fontFamily: "Quicksand_600SemiBold",
           },
+          headerStyle: {
+            backgroundColor: darkMode ? "rgba(52, 46, 84, 1)" : "white",
+          },
+          headerTintColor: darkMode ? "white" : "black",
+          drawerStyle: {
+            backgroundColor: darkMode ? "rgba(52, 46, 84, 1)" : "white",
+          },
+          drawerLabelStyle: darkMode
+            ? styles.drawerLabelStyleDark
+            : styles.drawerLabelStyle,
         }}
         drawerContent={(props) => {
           return (
@@ -53,11 +66,17 @@ export default function Layout() {
                   marginVertical: 20,
                   borderBottomWidth: 0.4,
                   borderBottomColor: "rgba(0,0,0,0.2)",
+                  backgroundColor: darkMode ? "rgba(52, 46, 84, 1)" : "white",
                 }}
               >
                 <Image
                   source={require("../../assets/icon.png")}
-                  style={{ width: 100, height: 100, alignSelf: "center" }}
+                  style={{
+                    width: 100,
+                    height: 100,
+                    alignSelf: "center",
+                    borderRadius: 50,
+                  }}
                 />
                 <StyledText
                   style={{
@@ -83,7 +102,6 @@ export default function Layout() {
           options={{
             drawerLabel: "Home",
             title: "",
-            drawerLabelStyle: styles.drawerLabelStyle,
             drawerContentStyle: styles.drawerContentStyle,
             // drawerItemStyle: { backgroundColor: "rgba(0,0,0,0.1)" },
           }}
@@ -102,9 +120,7 @@ export default function Layout() {
           options={{
             drawerLabel: "Profile",
             title: "Profile",
-            drawerLabelStyle: styles.drawerLabelStyle,
             drawerContentStyle: styles.drawerContentStyle,
-            // drawerItemStyle: { backgroundColor: "rgba(0,0,0,0.1)" },
           }}
         />
       </Drawer>
@@ -116,6 +132,10 @@ const styles = StyleSheet.create({
   drawerLabelStyle: {
     fontFamily: "Quicksand_500Medium",
     color: "black",
+  },
+  drawerLabelStyleDark: {
+    fontFamily: "Quicksand_500Medium",
+    color: "white",
   },
   drawerContentStyle: {
     backgroundColor: "white",
