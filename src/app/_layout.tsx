@@ -9,7 +9,7 @@ import {
 import { useFonts } from "expo-font";
 import React from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import drawer, { Drawer } from "expo-router/drawer";
+import { Drawer } from "expo-router/drawer";
 import {
   StyleSheet,
   View,
