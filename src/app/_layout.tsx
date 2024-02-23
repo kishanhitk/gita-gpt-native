@@ -15,7 +15,6 @@ import {
   View,
   Image,
   useColorScheme,
-  Button,
   Pressable,
 } from "react-native";
 import {
