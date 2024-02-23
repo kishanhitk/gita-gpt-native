@@ -25,7 +25,7 @@ import {
   commonQuestions,
   storedCachedAnswers,
 } from "../utils/constants";
-import { Send, Share2Icon, Volume2, VolumeX } from "lucide-react-native";
+import { Play, Send, Share2Icon, Volume2, VolumeX } from "lucide-react-native";
 
 export default function Index() {
   const [contentInput, setContentInput] = useState("");
@@ -172,170 +172,176 @@ export default function Index() {
   if (initializing) return null;
 
   return (
-    <ScrollView className="bg-white dark:bg-darkBlue h-full">
-      <View className="mx-5 h-full flex-1 flex-col items-center justify-center relative mt-24">
-        <TouchableOpacity
-          onPress={async () => {
-            Haptics.selectionAsync();
-            setIsMuted(!isMuted);
-            await AsyncStorage.setItem("isMuted", (!isMuted).toString());
-            if (isMuted) {
-              if (sound) {
-                await sound?.playAsync();
-              } else {
-                await playSound();
-              }
+    <View className="bg-white dark:bg-darkBlue h-full">
+      <Pressable
+        onPress={async () => {
+          Haptics.selectionAsync();
+          setIsMuted(!isMuted);
+          await AsyncStorage.setItem("isMuted", (!isMuted).toString());
+          if (isMuted) {
+            if (sound) {
+              await sound?.playAsync();
             } else {
-              await sound?.stopAsync();
+              await playSound();
             }
-          }}
-          style={{
-            position: "absolute",
-            top: -10,
-            right: 5,
-          }}
-        >
-          {!isMuted ? (
-            <Volume2
-              size={20}
-              color={darkMode ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.5)"}
-            />
-          ) : (
-            <VolumeX
-              size={20}
-              color={darkMode ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.6)"}
-            />
-          )}
-        </TouchableOpacity>
-        <StyledText className="text-4xl dark:text-white">Gita GPT</StyledText>
-        <StyledText
-          style={{
-            fontWeight: "300",
-          }}
-          className="mt-5 text-center text-lg dark:text-white/80"
-        >
-          Find solace in the wisdom of
-        </StyledText>
-        <StyledText
-          style={{
-            fontWeight: "500",
-          }}
-          className="my-2 text-xl dark:text-white/80"
-        >
-          Shree Krishna 🦚
-        </StyledText>
-        <StyledText
-          style={{
-            fontWeight: "300",
-          }}
-          className="mt-4 text-center text-sm dark:text-white/70"
-        >
-          11,56,973+ Updesh generated so far
-        </StyledText>
-        <View className="my-10 flex flex-col justify-center">
+          } else {
+            await sound?.stopAsync();
+          }
+        }}
+        style={{
+          position: "absolute",
+          bottom: 30,
+          right: 25,
+          zIndex: 5,
+          borderRadius: 50,
+          padding: 20,
+          backgroundColor: darkMode ? "rgba(0,0,0,0.6)" : "rgba(0,0,0,1)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          elevation: 3,
+        }}
+      >
+        {!isMuted ? (
+          <Volume2 size={20} color="white" />
+        ) : (
+          <VolumeX size={20} color="white" />
+        )}
+      </Pressable>
+      <ScrollView>
+        <View className="mx-5 mb-52 flex-1 flex-col items-center justify-center relative mt-24">
+          <StyledText className="text-4xl dark:text-white">Gita GPT</StyledText>
           <StyledText
-            className="text-md mb-2 text-gray-900 dark:text-white/90"
+            style={{
+              fontWeight: "300",
+            }}
+            className="mt-5 text-center text-lg dark:text-white/80"
+          >
+            Find solace in the wisdom of
+          </StyledText>
+          <StyledText
             style={{
               fontWeight: "500",
             }}
+            className="my-2 text-xl dark:text-white/80"
           >
-            Arjuna, what troubles you, my friend?
+            Shree Krishna 🦚
           </StyledText>
-          <TextInput
+          <StyledText
             style={{
-              fontFamily: "Quicksand_400Regular",
+              fontWeight: "300",
             }}
-            placeholder="How can I find inner peace in the midst of chaos?"
-            className={clsx(
-              "text-md rounded-md border border-gray-100  bg-gray-100 px-4 py-2 text-black",
-              "dark:border-0 dark:bg-white/10 dark:text-white dark:placeholder:text-white/50"
-            )}
-            multiline
-            numberOfLines={2}
-            value={contentInput}
-            onChangeText={(text) => setContentInput(text)}
-          />
-
-          <QuotaInfo />
-
-          <Button
-            isLoading={isLoading}
-            title="Ask Krishna"
-            onPress={(e) => {
-              Haptics.selectionAsync();
-              handleSubmit();
-            }}
-          />
-
-          <StyledText className="-mb-2 mt-5 dark:text-white/80">
-            Or, try one of these
-          </StyledText>
-          <View
-            style={{
-              height: 50,
-            }}
+            className="mt-4 text-center text-sm dark:text-white/70"
           >
-            <ScrollView horizontal>
-              {commonQuestions.map((question, index) => (
-                <TouchableOpacity
-                  onPress={async () => {
-                    setContentInput(question);
-                    await Haptics.selectionAsync();
-                  }}
-                  key={index}
-                  className="mr-2 mt-4 h-10 shrink-0 rounded-full border border-gray-100 bg-gray-200 px-4 py-2 text-sm  text-gray-900 dark:border-0 dark:bg-black/30 "
-                >
-                  <StyledText
-                    style={{
-                      fontWeight: "600",
-                    }}
-                    className="dark:text-white/80"
-                  >
-                    {question}
-                  </StyledText>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-          </View>
-        </View>
-        {resultText && (
-          <View className="w-full">
-            <View className="relative rounded-lg rounded-b-none border border-gray-50 bg-gray-100 p-5 pb-10 dark:border-0 dark:bg-black/30 dark:text-white/90">
-              <StyledText>{resultText}</StyledText>
-              <StyledText className="absolute right-0">- Krishna 🦚</StyledText>
-            </View>
-            <TouchableOpacity
-              onPress={async () => {
-                Haptics.selectionAsync();
-                Share.share({
-                  message: `Arjuna: ${contentInput}\n\nKrishna 🦚: ${resultText}\n\n\n\nAsk Krishna for guidance: https://gita.kishans.in/android`,
-                });
+            11,56,973+ Updesh generated so far
+          </StyledText>
+          <View className="my-10 flex flex-col justify-center">
+            <StyledText
+              className="text-md mb-2 text-gray-900 dark:text-white/90"
+              style={{
+                fontWeight: "500",
               }}
-              className="w-full flex gap-3 py-3 px-5 bg-gray-50 dark:bg-white/10 flex-row items-center rounded-lg border-t-0  rounded-t-none border-[0px] border-gray-800 dark:border-0"
             >
-              <StyledText
-                style={{
-                  fontWeight: "500",
-                }}
-              >
-                Share this wisdom with your friends and family
-              </StyledText>
-              <Share2Icon
-                size={20}
-                color={darkMode ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.6)"}
-              />
-            </TouchableOpacity>
-          </View>
-        )}
-        {error && (
-          <View className="rounded-md border border-red-400 bg-red-100 p-5 w-full mt-5 dark:border-0 dark:bg-red-500/10 dark:text-red-500">
-            <StyledText className="text-red-500 dark:text-red-400">
-              {error}
+              Arjuna, what troubles you, my friend?
             </StyledText>
+            <TextInput
+              style={{
+                fontFamily: "Quicksand_400Regular",
+              }}
+              placeholder="How can I find inner peace in the midst of chaos?"
+              className={clsx(
+                "text-md rounded-md border border-gray-100  bg-gray-100 px-4 py-2 text-black",
+                "dark:border-0 dark:bg-white/10 dark:text-white dark:placeholder:text-white/50"
+              )}
+              multiline
+              numberOfLines={2}
+              value={contentInput}
+              onChangeText={(text) => setContentInput(text)}
+            />
+
+            <QuotaInfo />
+
+            <Button
+              isLoading={isLoading}
+              title="Ask Krishna"
+              onPress={(e) => {
+                Haptics.selectionAsync();
+                handleSubmit();
+              }}
+            />
+
+            <StyledText className="-mb-2 mt-5 dark:text-white/80">
+              Or, try one of these
+            </StyledText>
+            <View
+              style={{
+                height: 50,
+              }}
+            >
+              <ScrollView horizontal>
+                {commonQuestions.map((question, index) => (
+                  <TouchableOpacity
+                    onPress={async () => {
+                      setContentInput(question);
+                      await Haptics.selectionAsync();
+                    }}
+                    key={index}
+                    className="mr-2 mt-4 h-10 shrink-0 rounded-full border border-gray-100 bg-gray-200 px-4 py-2 text-sm  text-gray-900 dark:border-0 dark:bg-black/30 "
+                  >
+                    <StyledText
+                      style={{
+                        fontWeight: "600",
+                      }}
+                      className="dark:text-white/80"
+                    >
+                      {question}
+                    </StyledText>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </View>
           </View>
-        )}
-        <StatusBar style="auto" />
-      </View>
-    </ScrollView>
+          {resultText && (
+            <View className="w-full">
+              <View className="relative rounded-lg rounded-b-none border border-gray-50 bg-gray-100 p-5 pb-10 dark:border-0 dark:bg-black/30 dark:text-white/90">
+                <StyledText>{resultText}</StyledText>
+                <StyledText className="absolute right-0">
+                  - Krishna 🦚
+                </StyledText>
+              </View>
+              <TouchableOpacity
+                onPress={async () => {
+                  Haptics.selectionAsync();
+                  Share.share({
+                    message: `Arjuna: ${contentInput}\n\nKrishna 🦚: ${resultText}\n\n\n\nAsk Krishna for guidance: https://gita.kishans.in/android`,
+                  });
+                }}
+                className="w-full flex gap-3 py-3 px-5 bg-gray-50 dark:bg-white/10 flex-row items-center rounded-lg border-t-0  rounded-t-none border-[0px] border-gray-800 dark:border-0"
+              >
+                <StyledText
+                  style={{
+                    fontWeight: "500",
+                  }}
+                >
+                  Share this wisdom with your friends and family
+                </StyledText>
+                <Share2Icon
+                  size={20}
+                  color={darkMode ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.6)"}
+                />
+              </TouchableOpacity>
+            </View>
+          )}
+          {error && (
+            <View className="rounded-md border border-red-400 bg-red-100 p-5 w-full mt-5 dark:border-0 dark:bg-red-500/10 dark:text-red-500">
+              <StyledText className="text-red-500 dark:text-red-400">
+                {error}
+              </StyledText>
+            </View>
+          )}
+          <StatusBar style="auto" />
+        </View>
+      </ScrollView>
+    </View>
   );
 }
