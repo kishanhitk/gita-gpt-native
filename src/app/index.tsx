@@ -264,8 +264,9 @@ export default function Index() {
             <ScrollView horizontal>
               {commonQuestions.map((question, index) => (
                 <TouchableOpacity
-                  onPress={() => {
+                  onPress={async () => {
                     setContentInput(question);
+                    await Haptics.selectionAsync();
                   }}
                   key={index}
                   className="mr-2 mt-4 h-10 shrink-0 rounded-full border border-gray-100 bg-gray-200 px-4 py-2 text-sm  text-gray-900 dark:border-0 dark:bg-black/30 "
