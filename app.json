@@ -22,7 +22,7 @@
       },
       "package": "com.kishans.gitagpt",
       "googleServicesFile": "./google-services.json",
-      "permissions": ["RECORD_AUDIO"]
+      "permissions": ["RECORD_AUDIO", "com.google.android.gms.permission.AD_ID"]
     },
     "web": {
       "favicon": "./assets/favicon.png",
