@@ -140,7 +140,6 @@ export default function Layout() {
             drawerLabel: "Home",
             title: "",
             drawerContentStyle: styles.drawerContentStyle,
-            // drawerItemStyle: { backgroundColor: "rgba(0,0,0,0.1)" },
           }}
         />
         <Drawer.Screen
@@ -157,6 +156,17 @@ export default function Layout() {
           options={{
             drawerLabel: "Profile",
             title: "Profile",
+            drawerContentStyle: styles.drawerContentStyle,
+            headerRight: () => {
+              return null;
+            },
+          }}
+        />
+        <Drawer.Screen
+          name="chat"
+          options={{
+            drawerLabel: "Chat",
+            title: "Chat",
             drawerContentStyle: styles.drawerContentStyle,
             headerRight: () => {
               return null;
