@@ -1,11 +1,11 @@
 import { View, Image, Pressable, useColorScheme } from "react-native";
 import React, { useEffect, useState } from "react";
-import StyledText from "../../components/StyledText";
+import StyledText from "~/components/StyledText";
 import auth from "@react-native-firebase/auth";
 import database from "@react-native-firebase/database";
 import { InfoIcon } from "lucide-react-native";
-import { useRateLimit } from "../../hooks/useRateLimit";
-import { useFirebaseUser } from "../../hooks/useFirebaseUser";
+import { useRateLimit } from "~/hooks/useRateLimit";
+import { useFirebaseUser } from "~/hooks/useFirebaseUser";
 
 const Profile = () => {
   const { user } = useFirebaseUser();

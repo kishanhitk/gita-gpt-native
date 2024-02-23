@@ -1,6 +1,6 @@
 import { ScrollView, View } from "react-native";
-import { LoginWithGoogleButton } from "../components/LoginWithGoogleButton";
-import StyledText from "../components/StyledText";
+import { LoginWithGoogleButton } from "~/components/LoginWithGoogleButton";
+import StyledText from "~/components/StyledText";
 import { StatusBar } from "expo-status-bar";
 
 const Index = () => {

@@ -1,8 +1,8 @@
 import { Link } from "expo-router";
 import React from "react";
 import { View } from "react-native";
-import Button from "../../components/Button";
-import StyledText from "../../components/StyledText";
+import Button from "~/components/Button";
+import StyledText from "~/components/StyledText";
 
 const Chat = () => {
   return (

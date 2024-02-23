@@ -3,12 +3,10 @@ import axios from "axios";
 import clsx from "clsx";
 import { Audio } from "expo-av";
 import * as Haptics from "expo-haptics";
-import { Redirect, router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import {
   PermissionsAndroid,
-  Pressable,
   ScrollView,
   Share,
   TextInput,
@@ -16,16 +14,16 @@ import {
   View,
   useColorScheme,
 } from "react-native";
-import Button from "../../components/Button";
-import QuotaInfo from "../../components/QuotaInfo";
-import StyledText from "../../components/StyledText";
+import Button from "~/components/Button";
+import QuotaInfo from "~/components/QuotaInfo";
+import StyledText from "~/components/StyledText";
 import {
   EXPO_PUBLIC_API_BASE_URL,
   commonQuestions,
   storedCachedAnswers,
-} from "../../utils/constants";
+} from "~/utils/constants";
 import { Share2Icon, Volume2, VolumeX } from "lucide-react-native";
-import { useFirebaseUser } from "../../hooks/useFirebaseUser";
+import { useFirebaseUser } from "~/hooks/useFirebaseUser";
 
 export default function Index() {
   const [contentInput, setContentInput] = useState("");
@@ -165,11 +163,7 @@ export default function Index() {
 
   return (
     <View className="bg-white dark:bg-darkBlue h-full ">
-      <Pressable
-        android_ripple={{
-          color: "rgba(0,0,0,0.3)",
-          borderless: false,
-        }}
+      <TouchableOpacity
         onPress={async () => {
           Haptics.selectionAsync();
           setIsMuted(!isMuted);
@@ -191,7 +185,7 @@ export default function Index() {
           zIndex: 5,
           borderRadius: 50,
           padding: 20,
-          backgroundColor: darkMode ? "rgba(0,0,0,0.6)" : "rgba(0,0,0,1)",
+          backgroundColor: darkMode ? "rgba(0,0,0,0.9)" : "rgba(0,0,0,1)",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -203,7 +197,7 @@ export default function Index() {
         ) : (
           <VolumeX size={20} color="white" />
         )}
-      </Pressable>
+      </TouchableOpacity>
       <ScrollView
         style={{
           paddingTop: 70,

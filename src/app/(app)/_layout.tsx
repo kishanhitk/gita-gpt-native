@@ -7,6 +7,8 @@ import {
   Image,
   useColorScheme,
   Pressable,
+  Text,
+  ActivityIndicator,
 } from "react-native";
 import {
   DrawerContentScrollView,
@@ -14,9 +16,9 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 import auth from "@react-native-firebase/auth";
-import StyledText from "../../components/StyledText";
+import StyledText from "~/components/StyledText";
 import { Redirect, router } from "expo-router";
-import { useFirebaseUser } from "../../hooks/useFirebaseUser";
+import { useFirebaseUser } from "~/hooks/useFirebaseUser";
 
 export default function Layout() {
   let colorScheme = useColorScheme();
@@ -24,7 +26,14 @@ export default function Layout() {
   const { user, initializing } = useFirebaseUser();
 
   if (initializing) {
-    return <StyledText>Loading...</StyledText>;
+    return (
+      <View className="bg-white dark:bg-darkBlue h-full">
+        <Text className="text-2xl dark:text-white text-center my-5">
+          Loading...
+        </Text>
+        <ActivityIndicator size="large" color="black" />
+      </View>
+    );
   }
 
   if (!user) {
