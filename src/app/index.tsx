@@ -284,7 +284,7 @@ export default function Index() {
           </View>
         </View>
         {resultText && (
-          <View className="relative rounded-lg border border-gray-50 bg-gray-100 p-5  pb-10 dark:border-none dark:bg-black/30 dark:text-white/90">
+          <View className="relative rounded-lg border border-gray-50 bg-gray-100 p-5  pb-10 dark:border-0 dark:bg-black/30 dark:text-white/90">
             <StyledText>{resultText}</StyledText>
             <StyledText className="absolute right-0">- Krishna 🦚</StyledText>
           </View>
