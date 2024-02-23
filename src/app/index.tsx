@@ -76,12 +76,14 @@ export default function Index() {
           console.log("Notification permission denied");
         }
       } catch (err) {
-        console.warn(err);
+        console.error(err);
       }
     };
 
-    requestPermission();
-  }, []);
+    if (user) {
+      requestPermission();
+    }
+  }, [user]);
 
   useEffect(() => {
     return sound

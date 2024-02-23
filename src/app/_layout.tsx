@@ -42,7 +42,7 @@ export default function Layout() {
     return null;
   }
 
-  const { user } = useFirebaseUser();
+  const user = auth().currentUser;
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

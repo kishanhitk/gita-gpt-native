@@ -8,7 +8,7 @@ import { useRateLimit } from "../hooks/useRateLimit";
 import { useFirebaseUser } from "../hooks/useFirebaseUser";
 
 const Profile = () => {
-  const { user } = useFirebaseUser();
+  const user = auth().currentUser;
   const [used, setUsed] = useState(0);
   const [totalUsed, setTotalUsed] = useState(0);
   let colorScheme = useColorScheme();
