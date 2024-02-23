@@ -1,4 +1,3 @@
-import { FontAwesome5 } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import auth from "@react-native-firebase/auth";
 import axios from "axios";
@@ -26,6 +25,7 @@ import {
   commonQuestions,
   storedCachedAnswers,
 } from "../utils/constants";
+import { Send, Share2Icon, Volume2, VolumeX } from "lucide-react-native";
 
 export default function Index() {
   const [contentInput, setContentInput] = useState("");
@@ -163,8 +163,8 @@ export default function Index() {
   if (initializing) return null;
 
   return (
-    <ScrollView className="bg-white dark:bg-darkBlue">
-      <View className="mx-5 h-screen flex-1 flex-col items-center justify-center relative">
+    <ScrollView className="bg-white dark:bg-darkBlue h-full">
+      <View className="mx-5 h-full flex-1 flex-col items-center justify-center relative pt-24">
         <TouchableOpacity
           onPress={async () => {
             Haptics.selectionAsync();
@@ -183,15 +183,13 @@ export default function Index() {
           className="absolute top-10 right-5"
         >
           {!isMuted ? (
-            <FontAwesome5
-              name="volume-up"
-              size={24}
-              color={darkMode ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.6)"}
+            <Volume2
+              size={20}
+              color={darkMode ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.5)"}
             />
           ) : (
-            <FontAwesome5
-              name="volume-mute"
-              size={24}
+            <VolumeX
+              size={20}
               color={darkMode ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.6)"}
             />
           )}
@@ -300,8 +298,7 @@ export default function Index() {
               }}
               className="absolute top-2 right-2"
             >
-              <FontAwesome5
-                name="share"
+              <Share2Icon
                 size={20}
                 color={darkMode ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.6)"}
               />

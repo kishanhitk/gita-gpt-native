@@ -7,7 +7,7 @@ import Button from "../components/Button";
 const Chat = () => {
   return (
     <View className="bg-white dark:bg-darkBlue h-full flex flex-col items-center justify-center px-10">
-      <View className="bg-blue-500 dark:bg-darkBlue flex items-center justify-center">
+      <View className="flex items-center justify-center">
         <StyledText className=" dark:text-white text-6xl">
           Coming Soon
         </StyledText>

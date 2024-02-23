@@ -4,7 +4,7 @@ import StyledText from "../components/StyledText";
 import auth from "@react-native-firebase/auth";
 import database from "@react-native-firebase/database";
 import { RATE_LIMIT } from "../utils/constants";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { InfoIcon } from "lucide-react-native";
 
 const Profile = () => {
   const user = auth().currentUser;
@@ -225,8 +225,7 @@ const Profile = () => {
             marginTop: 40,
           }}
         >
-          <FontAwesome5
-            name="info-circle"
+          <InfoIcon
             size={10}
             color={darkMode ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.6)"}
           />{" "}
