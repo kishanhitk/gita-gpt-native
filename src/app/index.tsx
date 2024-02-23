@@ -1,28 +1,31 @@
+import { FontAwesome5 } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import auth from "@react-native-firebase/auth";
+import axios from "axios";
 import clsx from "clsx";
+import { Audio } from "expo-av";
+import * as Haptics from "expo-haptics";
 import { router } from "expo-router";
+import * as Sharing from "expo-sharing";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useRef, useState } from "react";
 import {
+  Pressable,
   ScrollView,
+  Share,
   TextInput,
   TouchableOpacity,
   View,
   useColorScheme,
 } from "react-native";
 import Button from "../components/Button";
+import QuotaInfo from "../components/QuotaInfo";
 import StyledText from "../components/StyledText";
 import {
   EXPO_PUBLIC_API_BASE_URL,
   commonQuestions,
   storedCachedAnswers,
 } from "../utils/constants";
-import auth from "@react-native-firebase/auth";
-import axios from "axios";
-import { Audio } from "expo-av";
-import { FontAwesome5 } from "@expo/vector-icons";
-import QuotaInfo from "../components/QuotaInfo";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as Haptics from "expo-haptics";
 
 export default function Index() {
   const [contentInput, setContentInput] = useState("");
@@ -286,6 +289,24 @@ export default function Index() {
         </View>
         {resultText && (
           <View className="relative rounded-lg border border-gray-50 bg-gray-100 p-5  pb-10 dark:border-0 dark:bg-black/30 dark:text-white/90">
+            <Pressable
+              onPress={async () => {
+                Haptics.selectionAsync();
+                Share.share({
+                  message: `
+                  Arjuna: ${contentInput}\n\nKrishna 🦚: ${resultText}\n\n\n\nAsk Krishna for guidance: https://gita.kishans.in/android
+                  `,
+                });
+              }}
+              className="absolute top-2 right-2"
+            >
+              <FontAwesome5
+                name="share"
+                size={20}
+                color={darkMode ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.6)"}
+              />
+            </Pressable>
+
             <StyledText>{resultText}</StyledText>
             <StyledText className="absolute right-0">- Krishna 🦚</StyledText>
           </View>
