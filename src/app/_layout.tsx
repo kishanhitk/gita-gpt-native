@@ -26,6 +26,7 @@ import {
 import auth from "@react-native-firebase/auth";
 import StyledText from "../components/StyledText";
 import { router } from "expo-router";
+import { useFirebaseUser } from "../hooks/useFirebaseUser";
 
 export default function Layout() {
   let colorScheme = useColorScheme();
@@ -42,7 +43,7 @@ export default function Layout() {
     return null;
   }
 
-  const user = auth().currentUser;
+  const { user } = useFirebaseUser();
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

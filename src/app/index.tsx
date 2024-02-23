@@ -1,12 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import auth from "@react-native-firebase/auth";
 import axios from "axios";
 import clsx from "clsx";
 import { Audio } from "expo-av";
 import * as Haptics from "expo-haptics";
 import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   PermissionsAndroid,
   Pressable,
@@ -25,18 +24,16 @@ import {
   commonQuestions,
   storedCachedAnswers,
 } from "../utils/constants";
-import { Play, Send, Share2Icon, Volume2, VolumeX } from "lucide-react-native";
+import { Share2Icon, Volume2, VolumeX } from "lucide-react-native";
+import { useFirebaseUser } from "../hooks/useFirebaseUser";
 
 export default function Index() {
   const [contentInput, setContentInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [resultText, setResultText] = useState("");
   const [error, setError] = useState("");
-  const afterResultTextRef = useRef<HTMLDivElement>(null);
-  const [showDonate, setShowDonate] = useState(false);
   const API_ENABLED = true;
-  const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState();
+  const { user, token, initializing } = useFirebaseUser();
   const [sound, setSound] = useState<Audio.Sound | null>(null);
   const [isMuted, setIsMuted] = useState(false);
   let colorScheme = useColorScheme();
@@ -94,25 +91,6 @@ export default function Index() {
       : undefined;
   }, [sound]);
 
-  function onAuthStateChanged(user) {
-    setUser(user);
-    if (initializing) setInitializing(false);
-  }
-
-  const getToken = async () => {
-    const user = auth().currentUser;
-    if (user) {
-      const token = await user.getIdToken();
-      return token;
-    }
-    return null;
-  };
-
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
-
   useEffect(() => {
     if (!initializing && !user) {
       router.push("/login");
@@ -133,7 +111,7 @@ export default function Index() {
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${await getToken()}`,
+          Authorization: `Bearer ${token}`,
         },
       }
     );
@@ -229,10 +207,11 @@ export default function Index() {
       </Pressable>
       <ScrollView
         style={{
-          marginTop: 96,
+          paddingTop: 70,
         }}
+        className="h-full"
       >
-        <View className="mx-5 mb-52 flex-1 flex-col items-center justify-center relative">
+        <View className="mx-5 mb-96 flex-1 flex-col items-center justify-center relative">
           <StyledText className="text-4xl dark:text-white">Gita GPT</StyledText>
           <StyledText
             style={{

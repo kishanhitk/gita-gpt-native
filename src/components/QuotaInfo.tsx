@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import auth from "@react-native-firebase/auth";
 import database from "@react-native-firebase/database";
 import StyledText from "./StyledText";
 import { useRateLimit } from "../hooks/useRateLimit";
+import { useFirebaseUser } from "../hooks/useFirebaseUser";
 
 const QuotaInfo = () => {
-  const user = auth().currentUser;
+  const { user } = useFirebaseUser();
   const [used, setUsed] = useState(0);
   const RATE_LIMIT = useRateLimit();
 

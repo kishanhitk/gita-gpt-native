@@ -5,9 +5,10 @@ import auth from "@react-native-firebase/auth";
 import database from "@react-native-firebase/database";
 import { InfoIcon } from "lucide-react-native";
 import { useRateLimit } from "../hooks/useRateLimit";
+import { useFirebaseUser } from "../hooks/useFirebaseUser";
 
 const Profile = () => {
-  const user = auth().currentUser;
+  const { user } = useFirebaseUser();
   const [used, setUsed] = useState(0);
   const [totalUsed, setTotalUsed] = useState(0);
   let colorScheme = useColorScheme();
