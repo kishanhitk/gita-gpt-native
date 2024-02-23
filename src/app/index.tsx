@@ -5,10 +5,10 @@ import clsx from "clsx";
 import { Audio } from "expo-av";
 import * as Haptics from "expo-haptics";
 import { router } from "expo-router";
-import * as Sharing from "expo-sharing";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useRef, useState } from "react";
 import {
+  PermissionsAndroid,
   Pressable,
   ScrollView,
   Share,
@@ -66,6 +66,25 @@ export default function Index() {
     setSound(createdSound);
     await createdSound.playAsync();
   }
+
+  useEffect(() => {
+    const requestPermission = async () => {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log("You can use the notification");
+        } else {
+          console.log("Notification permission denied");
+        }
+      } catch (err) {
+        console.warn(err);
+      }
+    };
+
+    requestPermission();
+  }, []);
 
   useEffect(() => {
     return sound
@@ -172,7 +191,7 @@ export default function Index() {
   if (initializing) return null;
 
   return (
-    <View className="bg-white dark:bg-darkBlue h-full">
+    <View className="bg-white dark:bg-darkBlue h-full ">
       <Pressable
         onPress={async () => {
           Haptics.selectionAsync();
@@ -208,8 +227,12 @@ export default function Index() {
           <VolumeX size={20} color="white" />
         )}
       </Pressable>
-      <ScrollView>
-        <View className="mx-5 mb-52 flex-1 flex-col items-center justify-center relative mt-24">
+      <ScrollView
+        style={{
+          marginTop: 96,
+        }}
+      >
+        <View className="mx-5 mb-52 flex-1 flex-col items-center justify-center relative">
           <StyledText className="text-4xl dark:text-white">Gita GPT</StyledText>
           <StyledText
             style={{

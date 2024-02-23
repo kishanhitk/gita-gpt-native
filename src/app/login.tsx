@@ -1,28 +1,9 @@
-import { PermissionsAndroid, ScrollView, View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { LoginWithGoogleButton } from "../components/LoginWithGoogleButton";
 import StyledText from "../components/StyledText";
 import { StatusBar } from "expo-status-bar";
-import { useEffect } from "react";
 
 const Index = () => {
-  useEffect(() => {
-    const requestPermission = async () => {
-      try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
-        );
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          console.log("You can use the notification");
-        } else {
-          console.log("Notification permission denied");
-        }
-      } catch (err) {
-        console.warn(err);
-      }
-    };
-
-    requestPermission();
-  }, []);
   return (
     <ScrollView className="bg-white dark:dark:bg-[#393358]">
       <View className="flex-1 items-center justify-center mx-5 flex-col h-screen">
