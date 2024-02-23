@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import StyledText from "../components/StyledText";
 import auth from "@react-native-firebase/auth";
 import database from "@react-native-firebase/database";
-import { RATE_LIMIT } from "../utils/constants";
 import { InfoIcon } from "lucide-react-native";
+import { useRateLimit } from "../hooks/useRateLimit";
 
 const Profile = () => {
   const user = auth().currentUser;
@@ -12,6 +12,7 @@ const Profile = () => {
   const [totalUsed, setTotalUsed] = useState(0);
   let colorScheme = useColorScheme();
   const darkMode = colorScheme === "dark";
+  const RATE_LIMIT = useRateLimit();
 
   useEffect(() => {
     const date = new Date().toISOString().split("T")[0];
@@ -148,7 +149,7 @@ const Profile = () => {
             Today's Usage:
           </StyledText>
           <StyledText style={{ textAlign: "center", fontSize: 15 }}>
-            {RATE_LIMIT - used}/{RATE_LIMIT} tokens left today.
+            {RATE_LIMIT - used}/{RATE_LIMIT} questions left.
           </StyledText>
         </View>
 

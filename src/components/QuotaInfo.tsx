@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { RATE_LIMIT } from "../utils/constants";
 import auth from "@react-native-firebase/auth";
 import database from "@react-native-firebase/database";
-import { Text } from "react-native";
 import StyledText from "./StyledText";
+import { useRateLimit } from "../hooks/useRateLimit";
 
 const QuotaInfo = () => {
   const user = auth().currentUser;
   const [used, setUsed] = useState(0);
+  const RATE_LIMIT = useRateLimit();
 
   useEffect(() => {
     const date = new Date().toISOString().split("T")[0];
