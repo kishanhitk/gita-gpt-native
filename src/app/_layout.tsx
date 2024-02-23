@@ -10,7 +10,14 @@ import { useFonts } from "expo-font";
 import React from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import drawer, { Drawer } from "expo-router/drawer";
-import { StyleSheet, View, Image, useColorScheme } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Image,
+  useColorScheme,
+  Button,
+  Pressable,
+} from "react-native";
 import {
   DrawerContentScrollView,
   DrawerItem,
@@ -18,6 +25,7 @@ import {
 } from "@react-navigation/drawer";
 import auth from "@react-native-firebase/auth";
 import StyledText from "../components/StyledText";
+import { router } from "expo-router";
 
 export default function Layout() {
   let colorScheme = useColorScheme();
@@ -33,6 +41,8 @@ export default function Layout() {
   if (!fontsLoaded && !fontError) {
     return null;
   }
+
+  const user = auth().currentUser;
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -54,6 +64,32 @@ export default function Layout() {
           drawerLabelStyle: darkMode
             ? styles.drawerLabelStyleDark
             : styles.drawerLabelStyle,
+          headerRight: () => {
+            if (user) {
+              return (
+                <Pressable
+                  onPress={() => {
+                    router.push("profile");
+                  }}
+                  style={{
+                    marginRight: 20,
+                  }}
+                >
+                  <Image
+                    source={{ uri: user.photoURL }}
+                    style={{
+                      width: 35,
+                      height: 35,
+                      borderRadius: 20,
+                      backgroundColor: "rgba(0,0,0,0.1)",
+                    }}
+                  />
+                </Pressable>
+              );
+            } else {
+              return null;
+            }
+          },
         }}
         drawerContent={(props) => {
           return (
@@ -122,6 +158,9 @@ export default function Layout() {
             drawerLabel: "Profile",
             title: "Profile",
             drawerContentStyle: styles.drawerContentStyle,
+            headerRight: () => {
+              return null;
+            },
           }}
         />
       </Drawer>
