@@ -59,6 +59,7 @@ export default function Index() {
     const { sound: createdSound } = await Audio.Sound.createAsync(
       require("../../assets/flute.mp3")
     );
+    await createdSound.setVolumeAsync(0.5);
     setSound(createdSound);
     await createdSound.playAsync();
   }
