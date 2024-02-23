@@ -3,7 +3,7 @@ import axios from "axios";
 import clsx from "clsx";
 import { Audio } from "expo-av";
 import * as Haptics from "expo-haptics";
-import { router } from "expo-router";
+import { Redirect, router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import {
@@ -16,16 +16,16 @@ import {
   View,
   useColorScheme,
 } from "react-native";
-import Button from "../components/Button";
-import QuotaInfo from "../components/QuotaInfo";
-import StyledText from "../components/StyledText";
+import Button from "../../components/Button";
+import QuotaInfo from "../../components/QuotaInfo";
+import StyledText from "../../components/StyledText";
 import {
   EXPO_PUBLIC_API_BASE_URL,
   commonQuestions,
   storedCachedAnswers,
-} from "../utils/constants";
+} from "../../utils/constants";
 import { Share2Icon, Volume2, VolumeX } from "lucide-react-native";
-import { useFirebaseUser } from "../hooks/useFirebaseUser";
+import { useFirebaseUser } from "../../hooks/useFirebaseUser";
 
 export default function Index() {
   const [contentInput, setContentInput] = useState("");
@@ -57,7 +57,7 @@ export default function Index() {
       return;
     }
     const { sound: createdSound } = await Audio.Sound.createAsync(
-      require("../../assets/flute.mp3")
+      require("../../../assets/flute.mp3")
     );
     await createdSound.setVolumeAsync(0.5);
     setSound(createdSound);
@@ -71,7 +71,6 @@ export default function Index() {
           PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
         );
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          console.log("You can use the notification");
         } else {
           console.log("Notification permission denied");
         }
@@ -92,12 +91,6 @@ export default function Index() {
         }
       : undefined;
   }, [sound]);
-
-  useEffect(() => {
-    if (!initializing && !user) {
-      router.push("/login");
-    }
-  }, [initializing, user]);
 
   const getRandomAnswerFromCache = () => {
     const cachedAnswers = storedCachedAnswers[contentInput];
@@ -173,6 +166,10 @@ export default function Index() {
   return (
     <View className="bg-white dark:bg-darkBlue h-full ">
       <Pressable
+        android_ripple={{
+          color: "rgba(0,0,0,0.3)",
+          borderless: false,
+        }}
         onPress={async () => {
           Haptics.selectionAsync();
           setIsMuted(!isMuted);

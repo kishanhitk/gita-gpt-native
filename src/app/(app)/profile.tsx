@@ -1,14 +1,14 @@
 import { View, Image, Pressable, useColorScheme } from "react-native";
 import React, { useEffect, useState } from "react";
-import StyledText from "../components/StyledText";
+import StyledText from "../../components/StyledText";
 import auth from "@react-native-firebase/auth";
 import database from "@react-native-firebase/database";
 import { InfoIcon } from "lucide-react-native";
-import { useRateLimit } from "../hooks/useRateLimit";
-import { useFirebaseUser } from "../hooks/useFirebaseUser";
+import { useRateLimit } from "../../hooks/useRateLimit";
+import { useFirebaseUser } from "../../hooks/useFirebaseUser";
 
 const Profile = () => {
-  const user = auth().currentUser;
+  const { user } = useFirebaseUser();
   const [used, setUsed] = useState(0);
   const [totalUsed, setTotalUsed] = useState(0);
   let colorScheme = useColorScheme();
@@ -238,7 +238,7 @@ const Profile = () => {
             flexGrow: 0.5,
           }}
         ></View>
-        <Pressable onPress={() => auth().signOut()}>
+        <Pressable onPress={async () => await auth().signOut()}>
           <StyledText
             className=" text-black/60 dark:text-white/80"
             style={{

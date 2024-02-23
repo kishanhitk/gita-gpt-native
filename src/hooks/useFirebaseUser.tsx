@@ -6,6 +6,7 @@ export const useFirebaseUser = () => {
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>(
     auth().currentUser
   );
+
   const [initializing, setInitializing] = useState(true);
   const [token, setToken] = useState<string | null>(null);
 
@@ -15,7 +16,6 @@ export const useFirebaseUser = () => {
   }
 
   const getToken = async () => {
-    const user = auth().currentUser;
     if (user) {
       const token = await user.getIdToken();
       return token;
