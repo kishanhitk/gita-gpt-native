@@ -130,6 +130,9 @@ export default function Index() {
   };
 
   const handleSubmit = async () => {
+    if (!contentInput) {
+      return;
+    }
     setError("");
 
     if (!isMuted) {
@@ -151,10 +154,16 @@ export default function Index() {
       setResultText(textResponse);
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     } catch (error) {
-      setError(
-        error.response?.data?.message ||
+      setResultText("");
+      if (error.response?.data?.message === "Too Many Requests") {
+        setError(
           "You have reached the maximum number of requests for today. Please try again tomorrow."
-      );
+        );
+      } else {
+        setError(
+          "Something went wrong. Please try again later. If the problem persists, please let the developer know."
+        );
+      }
     } finally {
       setIsLoading(false);
     }
@@ -286,26 +295,39 @@ export default function Index() {
           </View>
         </View>
         {resultText && (
-          <View className="relative rounded-lg border border-gray-50 bg-gray-100 p-5  pb-10 dark:border-0 dark:bg-black/30 dark:text-white/90">
-            <Pressable
+          <View className="w-full">
+            <View className="relative rounded-lg rounded-b-none border border-gray-50 bg-gray-100 p-5 pb-10 dark:border-0 dark:bg-black/30 dark:text-white/90">
+              <StyledText>{resultText}</StyledText>
+              <StyledText className="absolute right-0">- Krishna 🦚</StyledText>
+            </View>
+            <TouchableOpacity
               onPress={async () => {
                 Haptics.selectionAsync();
                 Share.share({
-                  message: `
-                  Arjuna: ${contentInput}\n\nKrishna 🦚: ${resultText}\n\n\n\nAsk Krishna for guidance: https://gita.kishans.in/android
-                  `,
+                  message: `Arjuna: ${contentInput}\n\nKrishna 🦚: ${resultText}\n\n\n\nAsk Krishna for guidance: https://gita.kishans.in/android`,
                 });
               }}
-              className="absolute top-2 right-2"
+              className="w-full flex gap-3 py-3 px-5 bg-gray-50 dark:bg-white/10 flex-row items-center rounded-lg border-t-0  rounded-t-none border-[0px] border-gray-800 dark:border-0"
             >
+              <StyledText
+                style={{
+                  fontWeight: "500",
+                }}
+              >
+                Share this wisdom with your friends and family
+              </StyledText>
               <Share2Icon
                 size={20}
                 color={darkMode ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.6)"}
               />
-            </Pressable>
-
-            <StyledText>{resultText}</StyledText>
-            <StyledText className="absolute right-0">- Krishna 🦚</StyledText>
+            </TouchableOpacity>
+          </View>
+        )}
+        {error && (
+          <View className="rounded-md border border-red-400 bg-red-100 p-5 w-full mt-5 dark:border-0 dark:bg-red-500/10 dark:text-red-500">
+            <StyledText className="text-red-500 dark:text-red-400">
+              {error}
+            </StyledText>
           </View>
         )}
         <StatusBar style="auto" />
