@@ -48,3 +48,4 @@ ios/
 *.aab
 
 play-store-service.json
+google-services.json
