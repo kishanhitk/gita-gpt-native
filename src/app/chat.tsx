@@ -1,8 +1,8 @@
-import { View } from "react-native";
-import React from "react";
-import StyledText from "../components/StyledText";
 import { Link } from "expo-router";
+import React from "react";
+import { View } from "react-native";
 import Button from "../components/Button";
+import StyledText from "../components/StyledText";
 
 const Chat = () => {
   return (
@@ -14,7 +14,6 @@ const Chat = () => {
         <StyledText className=" dark:text-white text-2xl text-center my-5">
           You will receive a notification when this feature is available.
         </StyledText>
-        {/* TODO: Test it before rolling to prod */}
         <Link href="upi://pay?pa=kishans.in@ybl&pn=KishanKumar&cu=INR" asChild>
           <Button title="Donate to support the development"></Button>
         </Link>
