@@ -5,6 +5,7 @@ import {
   Image,
   View,
   ImageSourcePropType,
+  Pressable,
 } from "react-native";
 import StyledText from "./StyledText";
 
@@ -21,7 +22,10 @@ const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   return (
-    <TouchableOpacity
+    <Pressable
+      android_ripple={{
+        color: "rgba(255,255,255,0.1)",
+      }}
       {...props}
       disabled={isLoading}
       className="mt-4 flex h-12 bg-black dark:bg-black/70 items-center justify-center rounded-md px-4 text-white"
@@ -55,7 +59,7 @@ const Button: React.FC<ButtonProps> = ({
           </StyledText>
         </View>
       )}
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
