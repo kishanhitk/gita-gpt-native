@@ -173,7 +173,7 @@ export default function Index() {
 
   return (
     <ScrollView className="bg-white dark:bg-darkBlue h-full">
-      <View className="mx-5 h-full flex-1 flex-col items-center justify-center relative pt-24">
+      <View className="mx-5 h-full flex-1 flex-col items-center justify-center relative mt-24">
         <TouchableOpacity
           onPress={async () => {
             Haptics.selectionAsync();
@@ -189,7 +189,11 @@ export default function Index() {
               await sound?.stopAsync();
             }
           }}
-          className="absolute top-10 right-5"
+          style={{
+            position: "absolute",
+            top: -10,
+            right: 5,
+          }}
         >
           {!isMuted ? (
             <Volume2
