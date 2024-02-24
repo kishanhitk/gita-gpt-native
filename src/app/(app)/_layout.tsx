@@ -160,6 +160,17 @@ export default function Layout() {
             },
           }}
         />
+        <Drawer.Screen
+          name="about"
+          options={{
+            drawerLabel: "About",
+            title: "About",
+            drawerContentStyle: styles.drawerContentStyle,
+            headerRight: () => {
+              return null;
+            },
+          }}
+        />
       </Drawer>
     </GestureHandlerRootView>
   );

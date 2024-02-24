@@ -14,7 +14,7 @@ const Chat = () => {
         <StyledText className=" dark:text-white text-2xl text-center my-5">
           You will receive a notification when this feature is available.
         </StyledText>
-        <Link href="upi://pay?pa=kishans.in@ybl&pn=KishanKumar&cu=INR" asChild>
+        <Link href="about" asChild>
           <Button title="Donate to support the development"></Button>
         </Link>
       </View>
