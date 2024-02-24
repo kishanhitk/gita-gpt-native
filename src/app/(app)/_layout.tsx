@@ -7,7 +7,6 @@ import {
   Image,
   useColorScheme,
   Pressable,
-  Text,
   ActivityIndicator,
 } from "react-native";
 import {
@@ -19,18 +18,31 @@ import auth from "@react-native-firebase/auth";
 import StyledText from "~/components/StyledText";
 import { Redirect, router } from "expo-router";
 import { useFirebaseUser } from "~/hooks/useFirebaseUser";
+import { useEffect, useState } from "react";
+import * as Network from "expo-network";
 
 export default function Layout() {
   let colorScheme = useColorScheme();
   const darkMode = colorScheme === "dark";
   const { user, initializing } = useFirebaseUser();
+  const [isOffline, setIsOffline] = useState(false);
+  console.log({ isOffline });
+
+  useEffect(() => {
+    const networkStatus = async () => {
+      const status = await Network.getNetworkStateAsync();
+      setIsOffline(!status.isConnected);
+    };
+    networkStatus();
+  }, []);
+
+  if (isOffline) {
+    return <Redirect href="offline" />;
+  }
 
   if (initializing) {
     return (
-      <View className="bg-white dark:bg-darkBlue h-full">
-        <Text className="text-2xl dark:text-white text-center my-5">
-          Loading...
-        </Text>
+      <View className="bg-white dark:bg-darkBlue h-full items-center justify-center">
         <ActivityIndicator size="large" color="black" />
       </View>
     );

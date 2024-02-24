@@ -20,7 +20,7 @@ const About = () => {
   return (
     <View className="bg-white dark:bg-darkBlue h-full">
       <ScrollView>
-        <View className="m-10">
+        <View className="mx-10 my-10">
           <Hero />
           <View className="mt-7">
             <StyledText className="dark:text-white/80 mb-5 text-center">

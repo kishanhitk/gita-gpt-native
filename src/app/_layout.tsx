@@ -7,7 +7,6 @@ import {
   Quicksand_700Bold,
 } from "@expo-google-fonts/quicksand";
 import { useFonts } from "expo-font";
-import React from "react";
 import { Slot } from "expo-router";
 
 export default function Layout() {
