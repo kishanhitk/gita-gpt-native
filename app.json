@@ -11,7 +11,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -22,7 +24,10 @@
       },
       "package": "com.kishans.gitagpt",
       "googleServicesFile": "./google-services.json",
-      "permissions": ["RECORD_AUDIO", "com.google.android.gms.permission.AD_ID"]
+      "permissions": [
+        "RECORD_AUDIO",
+        "com.google.android.gms.permission.AD_ID"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -48,6 +53,12 @@
         "projectId": "3039adc9-b915-482c-b15c-d0426274cbdb"
       }
     },
-    "scheme": "gitagpt"
+    "scheme": "gitagpt",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/3039adc9-b915-482c-b15c-d0426274cbdb"
+    }
   }
 }

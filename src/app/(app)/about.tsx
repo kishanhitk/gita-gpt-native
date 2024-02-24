@@ -20,14 +20,23 @@ const About = () => {
   return (
     <View className="bg-white dark:bg-darkBlue h-full">
       <ScrollView>
-        <View className="mx-10 my-10">
+        <View
+          style={{
+            margin: 30,
+          }}
+        >
           <Hero />
-          <View className="mt-7">
+          <View
+            style={{
+              marginTop: 20,
+            }}
+          >
             <StyledText className="dark:text-white/80 mb-5 text-center">
               Version: {Application.nativeApplicationVersion}
             </StyledText>
             <StyledText>
-              Gita GPT is free to use. But the API costs money.
+              Gita GPT is free to use and completely ad-free. But the API and
+              server costs money to run.
               {"\n"}
               {"\n"}
               If you find joy or value in Gita GPT, please consider supporting
