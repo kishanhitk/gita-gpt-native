@@ -42,7 +42,7 @@ export const LoginWithGoogleButton = () => {
         onGoogleButtonPress()
           .then(() => {
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-            router.push("/");
+            router.replace("/");
           })
           .catch((error) => {
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
