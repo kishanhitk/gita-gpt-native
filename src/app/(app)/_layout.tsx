@@ -1,27 +1,26 @@
-import React from "react";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Drawer } from "expo-router/drawer";
-import {
-  StyleSheet,
-  View,
-  Image,
-  useColorScheme,
-  Pressable,
-  ActivityIndicator,
-  ToastAndroid,
-} from "react-native";
+import auth from "@react-native-firebase/auth";
 import {
   DrawerContentScrollView,
   DrawerItem,
   DrawerItemList,
 } from "@react-navigation/drawer";
-import auth from "@react-native-firebase/auth";
-import StyledText from "~/components/StyledText";
-import { Redirect, router } from "expo-router";
-import { useFirebaseUser } from "~/hooks/useFirebaseUser";
-import { useEffect, useState } from "react";
 import * as Network from "expo-network";
+import { Redirect, router } from "expo-router";
+import { Drawer } from "expo-router/drawer";
 import { WifiOff } from "lucide-react-native";
+import React, { useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  Image,
+  Pressable,
+  StyleSheet,
+  ToastAndroid,
+  View,
+  useColorScheme,
+} from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import StyledText from "~/components/StyledText";
+import { useFirebaseUser } from "~/hooks/useFirebaseUser";
 
 export default function Layout() {
   let colorScheme = useColorScheme();
