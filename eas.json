@@ -25,5 +25,15 @@
   },
   "submit": {
     "production": {}
+  },
+  "expo": {
+    "plugins": [
+      [
+        "expo-updates",
+        {
+          "username": "kishanhitk"
+        }
+      ]
+    ]
   }
 }
