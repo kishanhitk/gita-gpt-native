@@ -1,8 +1,11 @@
-import { View, Text } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import React from "react";
 import { WifiOff } from "lucide-react-native";
 
-const Offline = () => {
+interface OfflineProps {
+  onRetry: () => void;
+}
+const Offline = ({ onRetry }: OfflineProps) => {
   return (
     <View className="bg-white dark:bg-darkBlue h-full items-center justify-center gap-5">
       <WifiOff className="h-20 w-20" />
@@ -12,6 +15,10 @@ const Offline = () => {
       <Text className="text-lg dark:text-white text-center">
         Please connect to internet to use Gita GPT.
       </Text>
+
+      <Pressable className="bg-blue-500 p-3 rounded-lg" onPress={onRetry}>
+        <Text className="text-white">Retry</Text>
+      </Pressable>
     </View>
   );
 };

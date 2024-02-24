@@ -8,6 +8,7 @@ import {
   useColorScheme,
   Pressable,
   ActivityIndicator,
+  ToastAndroid,
 } from "react-native";
 import {
   DrawerContentScrollView,
@@ -20,24 +21,48 @@ import { Redirect, router } from "expo-router";
 import { useFirebaseUser } from "~/hooks/useFirebaseUser";
 import { useEffect, useState } from "react";
 import * as Network from "expo-network";
+import { WifiOff } from "lucide-react-native";
 
 export default function Layout() {
   let colorScheme = useColorScheme();
   const darkMode = colorScheme === "dark";
   const { user, initializing } = useFirebaseUser();
   const [isOffline, setIsOffline] = useState(false);
-  console.log({ isOffline });
+
+  const networkStatus = async () => {
+    const status = await Network.getNetworkStateAsync();
+
+    if (!status.isConnected) {
+      ToastAndroid.show("You are offline", ToastAndroid.SHORT);
+    }
+    setIsOffline(!status.isConnected);
+  };
 
   useEffect(() => {
-    const networkStatus = async () => {
-      const status = await Network.getNetworkStateAsync();
-      setIsOffline(!status.isConnected);
-    };
     networkStatus();
   }, []);
 
   if (isOffline) {
-    return <Redirect href="offline" />;
+    return (
+      <View className="bg-white dark:bg-darkBlue h-full items-center justify-center gap-5">
+        <WifiOff className="h-20 w-20" />
+        <StyledText className="text-4xl dark:text-white text-center">
+          You are offline
+        </StyledText>
+        <StyledText className="text-lg dark:text-white text-center">
+          Please connect to internet to use Gita GPT.
+        </StyledText>
+
+        <Pressable
+          className="py-4 rounded-lg bg-black px-10"
+          onPress={() => {
+            networkStatus();
+          }}
+        >
+          <StyledText className="text-white ">Retry</StyledText>
+        </Pressable>
+      </View>
+    );
   }
 
   if (initializing) {
