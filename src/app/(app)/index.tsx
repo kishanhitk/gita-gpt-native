@@ -94,7 +94,10 @@ export default function Index() {
   const getRandomAnswerFromCache = async () => {
     const cachedAnswers = storedCachedAnswers[contentInput];
 
-    if (cachedAnswers) {
+    const randomCachedAnswer =
+      cachedAnswers[Math.floor(Math.random() * cachedAnswers.length)];
+
+    if (randomCachedAnswer) {
       const fakeDelay = new Promise((resolve) => {
         setTimeout(() => {
           resolve("");
@@ -102,9 +105,8 @@ export default function Index() {
       });
       await fakeDelay;
     }
-    return cachedAnswers
-      ? cachedAnswers[Math.floor(Math.random() * cachedAnswers.length)]
-      : null;
+
+    return cachedAnswers ? randomCachedAnswer : null;
   };
 
   const fetchAnswerFromAPI = async () => {
