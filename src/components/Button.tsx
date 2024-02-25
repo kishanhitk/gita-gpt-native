@@ -28,7 +28,7 @@ const Button: React.FC<ButtonProps> = ({
       }}
       {...props}
       disabled={isLoading}
-      className="mt-4 flex h-12 bg-black dark:bg-black/70 items-center justify-center rounded-md px-4 text-white"
+      className="mt-4 flex h-12 bg-black dark:bg-black/70 items-center justify-center rounded-md px-4  text-white"
     >
       {isLoading ? (
         <ActivityIndicator size="small" color="#FFFFFF" />

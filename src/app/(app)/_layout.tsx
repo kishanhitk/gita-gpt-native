@@ -190,10 +190,6 @@ export default function Layout() {
           options={{
             drawerLabel: "Chat",
             title: "Chat",
-            drawerContentStyle: styles.drawerContentStyle,
-            headerRight: () => {
-              return null;
-            },
           }}
         />
         <Drawer.Screen
