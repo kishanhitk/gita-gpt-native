@@ -280,7 +280,7 @@ export default function Index() {
           </View>
           {resultText && (
             <View className="w-full">
-              <View className="relative rounded-t-lg rounded-b-none border border-gray-50 bg-gray-100 p-5 pb-10 dark:border-0 dark:bg-black/30 dark:text-white/90">
+              <View className="relative rounded-lg rounded-b-none border border-gray-50 bg-gray-100 p-5 pb-10 dark:border-0 dark:bg-black/30 dark:text-white/90">
                 <StyledText>{resultText}</StyledText>
                 <StyledText className="absolute right-0">
                   - Krishna 🦚
@@ -293,11 +293,7 @@ export default function Index() {
                     message: `Arjuna: ${contentInput}\n\nKrishna 🦚: ${resultText}\n\n\n\nAsk Krishna for guidance: https://gita.kishans.in/android`,
                   });
                 }}
-                style={{
-                  display: "flex",
-                  gap: 3,
-                }}
-                className="w-full py-3 px-5 bg-gray-50 dark:bg-white/10 flex-row items-center rounded-b-lg border-t-0  rounded-t-none border-[0px] border-gray-800 dark:border-0"
+                className="w-full flex gap-3 py-3 px-5 bg-gray-50 dark:bg-white/10 flex-row items-center rounded-lg border-t-0  rounded-t-none border-[0px] border-gray-800 dark:border-0"
               >
                 <StyledText
                   style={{
