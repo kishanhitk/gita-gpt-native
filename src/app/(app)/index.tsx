@@ -205,7 +205,12 @@ export default function Index() {
         }}
         className="h-full"
       >
-        <View className="mx-5 mb-96 flex-1 flex-col items-center justify-center relative">
+        <View
+          style={{
+            marginBottom: 400,
+          }}
+          className="mx-5 flex-1 flex-col items-center justify-center relative"
+        >
           <Hero />
           <View className="my-10 flex flex-col justify-center">
             <StyledText

@@ -94,7 +94,7 @@ const About = () => {
               onPress={async () => {
                 Linking.openURL("https://twitter.com/jst_kishan");
               }}
-              title="Follow me on Twitter for updates"
+              title="Follow on Twitter for updates"
             ></Button>
             <Pressable
               className="flex items-center justify-center"
