@@ -65,6 +65,16 @@ This is the app version of the Gita GPT web app, which is available at [gita.kis
 - Nativewind v4 (Since v4 is in alpha, sometimes it may not work as expected. But I had to use it because the v2 does not work with Expo Router v3. The code has a lot of messy workarounds to make it work.)
 
 
+
+
+## Roadmap
+- [ ] Add multiple languages support
+- [ ] Add updesha to favorite
+
+
+**The API code is in a separate project which is not open-sourced yet. If Expo API Routes becomes stable, the API code will be moved to the code here.**
+
+
 ## Contributing
 
 Contributions are welcom to Gita GPT! If you have suggestions for improvements or new features, please feel free to open an issue or submit a pull request.
