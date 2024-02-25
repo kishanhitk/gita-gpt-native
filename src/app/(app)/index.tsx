@@ -91,8 +91,17 @@ export default function Index() {
       : undefined;
   }, [sound]);
 
-  const getRandomAnswerFromCache = () => {
+  const getRandomAnswerFromCache = async () => {
     const cachedAnswers = storedCachedAnswers[contentInput];
+
+    if (cachedAnswers) {
+      const fakeDelay = new Promise((resolve) => {
+        setTimeout(() => {
+          resolve("");
+        }, 1500);
+      });
+      await fakeDelay;
+    }
     return cachedAnswers
       ? cachedAnswers[Math.floor(Math.random() * cachedAnswers.length)]
       : null;
@@ -132,7 +141,7 @@ export default function Index() {
     setIsLoading(true);
 
     try {
-      let textResponse = getRandomAnswerFromCache();
+      let textResponse = await getRandomAnswerFromCache();
 
       if (!textResponse && API_ENABLED) {
         textResponse = await fetchAnswerFromAPI();
@@ -293,14 +302,22 @@ export default function Index() {
                     message: `Arjuna: ${contentInput}\n\nKrishna 🦚: ${resultText}\n\n\n\nAsk Krishna for guidance: https://gita.kishans.in/android`,
                   });
                 }}
-                className="w-full flex gap-3 py-3 px-5 bg-gray-50 dark:bg-white/10 flex-row items-center rounded-lg border-t-0  rounded-t-none border-[0px] border-gray-800 dark:border-0"
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: 12,
+                  justifyContent: "center",
+                  paddingHorizontal: 20,
+                  paddingVertical: 12,
+                }}
+                className="w-full bg-gray-100 dark:bg-white/10 items-center rounded-lg border-t-0 rounded-t-none border-[0px] border-gray-800 dark:border-0"
               >
                 <StyledText
                   style={{
                     fontWeight: "500",
                   }}
                 >
-                  Share this wisdom with your friends and family
+                  Share this wisdom
                 </StyledText>
                 <Share2Icon
                   size={20}
