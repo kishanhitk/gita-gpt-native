@@ -1,33 +1,65 @@
-import clsx from "clsx";
 import React from "react";
-import { ActivityIndicator, TouchableOpacity, Text } from "react-native";
+import {
+  ActivityIndicator,
+  TouchableOpacity,
+  Image,
+  View,
+  ImageSourcePropType,
+  Pressable,
+} from "react-native";
 import StyledText from "./StyledText";
 
-interface ButtonProps {
+interface ButtonProps extends React.ComponentProps<typeof TouchableOpacity> {
   isLoading?: boolean;
   title: string;
+  iconSrc?: ImageSourcePropType;
 }
 
-const Button: React.FC<ButtonProps> = ({ isLoading = false, title }) => {
+const Button: React.FC<ButtonProps> = ({
+  isLoading = false,
+  title,
+  iconSrc,
+  ...props
+}) => {
   return (
-    <TouchableOpacity
+    <Pressable
+      android_ripple={{
+        color: "rgba(255,255,255,0.1)",
+      }}
+      {...props}
       disabled={isLoading}
-      className="mt-4 flex h-12 bg-black items-center justify-center rounded-md px-4 text-white"
-      onPress={() => {}}
+      className="mt-4 flex h-12 bg-black dark:bg-black/70 items-center justify-center rounded-md px-4  text-white"
     >
       {isLoading ? (
         <ActivityIndicator size="small" color="#FFFFFF" />
       ) : (
-        <StyledText
+        <View
           style={{
-            fontWeight: "600",
+            flexDirection: "row",
+            alignItems: "center",
           }}
-          className="text-white text-xl"
         >
-          {title}
-        </StyledText>
+          {iconSrc && (
+            <Image
+              source={iconSrc}
+              style={{
+                height: 20,
+                width: 20,
+                marginRight: 10,
+              }}
+            />
+          )}
+          <StyledText
+            style={{
+              fontWeight: "600",
+            }}
+            className="text-white text-xl"
+          >
+            {title}
+          </StyledText>
+        </View>
       )}
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

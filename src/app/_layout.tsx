@@ -1,5 +1,3 @@
-// import Slot from "expo-router";
-import { Slot } from "expo-router";
 import "../global.css";
 import {
   Quicksand_300Light,
@@ -9,6 +7,7 @@ import {
   Quicksand_700Bold,
 } from "@expo-google-fonts/quicksand";
 import { useFonts } from "expo-font";
+import { Slot } from "expo-router";
 
 export default function Layout() {
   let [fontsLoaded, fontError] = useFonts({
@@ -22,7 +21,6 @@ export default function Layout() {
   if (!fontsLoaded && !fontError) {
     return null;
   }
+
   return <Slot />;
 }
-
-// export default Slot;

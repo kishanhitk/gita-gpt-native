@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "gita-gpt-native",
+    "name": "Gita GPT",
     "slug": "gita-gpt-native",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -22,8 +22,12 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.kishans.gitgpt",
-      "versionCode": 1
+      "package": "com.kishans.gitagpt",
+      "googleServicesFile": "./google-services.json",
+      "permissions": [
+        "RECORD_AUDIO",
+        "com.google.android.gms.permission.AD_ID"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -31,8 +35,30 @@
     },
     "plugins": [
       "expo-font",
-      "expo-router"
+      "expo-router",
+      "@react-native-firebase/app",
+      "@react-native-firebase/auth",
+      [
+        "expo-updates",
+        {
+          "username": "kishanhitk"
+        }
+      ]
     ],
-    "scheme": "your-app-scheme"
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "3039adc9-b915-482c-b15c-d0426274cbdb"
+      }
+    },
+    "scheme": "gitagpt",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/3039adc9-b915-482c-b15c-d0426274cbdb"
+    }
   }
 }
