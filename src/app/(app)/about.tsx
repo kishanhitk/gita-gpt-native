@@ -90,12 +90,35 @@ const About = () => {
                 });
               }}
             ></Button>
-            <Button
-              onPress={async () => {
-                Linking.openURL("https://twitter.com/jst_kishan");
+            <Link href="https://twitter.com/jst_kishan" asChild>
+              <Button title="Follow on Twitter for updates"></Button>
+            </Link>
+            {/* BUG: The link does not work if the child is an <Imaage/> */}
+            {/* <View
+              style={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
               }}
-              title="Follow on Twitter for updates"
-            ></Button>
+            >
+              <Link
+                asChild
+                href="https://www.buymeacoffee.com/jstkishan"
+                style={{
+                  marginTop: 20,
+                }}
+              >
+                <Image
+                  source={{
+                    uri: "https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png",
+                  }}
+                  style={{
+                    height: 45,
+                    width: 162,
+                  }}
+                />
+              </Link>
+            </View> */}
             <Pressable
               className="flex items-center justify-center"
               onPress={async () => {
