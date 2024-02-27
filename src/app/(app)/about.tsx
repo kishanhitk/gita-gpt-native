@@ -93,19 +93,21 @@ const About = () => {
             <Link href="https://twitter.com/jst_kishan" asChild>
               <Button title="Follow on Twitter for updates"></Button>
             </Link>
-            {/* BUG: The link does not work if the child is an <Imaage/> */}
+            {/* BUG: For some reason the image inside the link is not properly aligned.
+            Image gets aligned if we use `asChild` prop, but using that makes the link unclickable.
+             */}
             {/* <View
               style={{
-                flex: 1,
                 alignItems: "center",
-                justifyContent: "center",
+                marginTop: 20,
+                flex: 1,
               }}
             >
               <Link
-                asChild
                 href="https://www.buymeacoffee.com/jstkishan"
                 style={{
-                  marginTop: 20,
+                  padding: 0,
+                  backgroundColor: "white",
                 }}
               >
                 <Image
