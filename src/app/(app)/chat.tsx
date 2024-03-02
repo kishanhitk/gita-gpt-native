@@ -1,6 +1,6 @@
 import { Link } from "expo-router";
 import React from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import Button from "~/components/Button";
 import StyledText from "~/components/StyledText";
 
@@ -16,10 +16,7 @@ const Chat = () => {
         </StyledText>
 
         <Link href="about" asChild className="w-full justify-self-stretch">
-          <Button
-            title="Donate to support"
-            className="w-full self-stretch place-self-stretch justify-self-stretch"
-          ></Button>
+          <Button title="Support the development"></Button>
         </Link>
       </View>
     </View>
