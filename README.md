@@ -5,11 +5,12 @@ Gita GPT help you ask questions and receive answers inspired by the teachings of
 
 This is the app version of the Gita GPT web app, which is available at [gita.kishans.in](https://gita.kishans.in).
 
-![Gita GPT](./screenshot.png)
+<img src="./screenshot.png" alt="Gita GPT" width="400"/>
+
 
 <a href="https://play.google.com/store/apps/details?id=com.kishans.gitagpt&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1">
               <img
-                className="mx-auto h-20"
+width="400"
                 alt="Get it on Google Play"
                 src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
               />
