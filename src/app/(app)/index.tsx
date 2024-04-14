@@ -94,10 +94,9 @@ export default function Index() {
   const getRandomAnswerFromCache = async () => {
     const cachedAnswers = storedCachedAnswers[contentInput];
 
-    const randomCachedAnswer =
+    let randomCachedAnswer = "";
+    if (cachedAnswers && cachedAnswers.length > 0) {
       cachedAnswers[Math.floor(Math.random() * cachedAnswers.length)];
-
-    if (randomCachedAnswer) {
       const fakeDelay = new Promise((resolve) => {
         setTimeout(() => {
           resolve("");
@@ -156,6 +155,7 @@ export default function Index() {
       setResultText(textResponse);
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     } catch (error) {
+      console.error("Error fetching answer", error);
       setResultText("");
       if (error.response?.data?.message === "Too Many Requests") {
         setError(

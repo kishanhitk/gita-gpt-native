@@ -90,12 +90,37 @@ const About = () => {
                 });
               }}
             ></Button>
-            <Button
-              onPress={async () => {
-                Linking.openURL("https://twitter.com/jst_kishan");
+            <Link href="https://twitter.com/jst_kishan" asChild>
+              <Button title="Follow on Twitter for updates"></Button>
+            </Link>
+            {/* BUG: For some reason the image inside the link is not properly aligned.
+            Image gets aligned if we use `asChild` prop, but using that makes the link unclickable.
+             */}
+            {/* <View
+              style={{
+                alignItems: "center",
+                marginTop: 20,
+                flex: 1,
               }}
-              title="Follow on Twitter for updates"
-            ></Button>
+            >
+              <Link
+                href="https://www.buymeacoffee.com/jstkishan"
+                style={{
+                  padding: 0,
+                  backgroundColor: "white",
+                }}
+              >
+                <Image
+                  source={{
+                    uri: "https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png",
+                  }}
+                  style={{
+                    height: 45,
+                    width: 162,
+                  }}
+                />
+              </Link>
+            </View> */}
             <Pressable
               className="flex items-center justify-center"
               onPress={async () => {

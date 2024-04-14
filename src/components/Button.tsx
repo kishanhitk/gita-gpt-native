@@ -8,6 +8,7 @@ import {
   Pressable,
 } from "react-native";
 import StyledText from "./StyledText";
+import { forwardRef } from "~/utils/forwardRef";
 
 interface ButtonProps extends React.ComponentProps<typeof TouchableOpacity> {
   isLoading?: boolean;
@@ -15,14 +16,13 @@ interface ButtonProps extends React.ComponentProps<typeof TouchableOpacity> {
   iconSrc?: ImageSourcePropType;
 }
 
-const Button: React.FC<ButtonProps> = ({
-  isLoading = false,
-  title,
-  iconSrc,
-  ...props
-}) => {
+const ButtonComponent: React.ForwardRefRenderFunction<View, ButtonProps> = (
+  { isLoading = false, title, iconSrc, ...props },
+  ref
+) => {
   return (
     <Pressable
+      ref={ref}
       android_ripple={{
         color: "rgba(255,255,255,0.1)",
       }}
@@ -62,5 +62,7 @@ const Button: React.FC<ButtonProps> = ({
     </Pressable>
   );
 };
+
+const Button = forwardRef(ButtonComponent);
 
 export default Button;
