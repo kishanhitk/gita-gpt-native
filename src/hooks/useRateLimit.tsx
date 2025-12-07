@@ -1,3 +1,6 @@
+// NOTE: This hook is deprecated. Rate limit is now fetched from API.
+// Keeping for reference during migration.
+
 import { useState, useEffect } from "react";
 import database from "@react-native-firebase/database";
 

@@ -23,7 +23,7 @@ import {
   storedCachedAnswers,
 } from "~/utils/constants";
 import { Share2Icon, Volume2, VolumeX } from "lucide-react-native";
-import { useFirebaseUser } from "~/hooks/useFirebaseUser";
+import { useSupabaseUser } from "~/hooks/useSupabaseUser";
 import Hero from "~/components/Hero";
 
 export default function Index() {
@@ -32,7 +32,7 @@ export default function Index() {
   const [resultText, setResultText] = useState("");
   const [error, setError] = useState("");
   const API_ENABLED = true;
-  const { user, token, initializing } = useFirebaseUser();
+  const { user, token, initializing } = useSupabaseUser();
   const [sound, setSound] = useState<Audio.Sound | null>(null);
   const [isMuted, setIsMuted] = useState(false);
   let colorScheme = useColorScheme();

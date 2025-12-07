@@ -1,62 +1,73 @@
 import { View, Image, Pressable, useColorScheme } from "react-native";
 import React, { useEffect, useState } from "react";
 import StyledText from "~/components/StyledText";
-import auth from "@react-native-firebase/auth";
-import database from "@react-native-firebase/database";
 import { InfoIcon } from "lucide-react-native";
-import { useRateLimit } from "~/hooks/useRateLimit";
-import { useFirebaseUser } from "~/hooks/useFirebaseUser";
+import { useSupabaseUser } from "~/hooks/useSupabaseUser";
+import { supabase } from "~/utils/supabase";
+import { EXPO_PUBLIC_API_BASE_URL } from "~/utils/constants";
+
+interface UsageData {
+  used: number;
+  limit: number;
+  totalUsed: number;
+}
 
 const Profile = () => {
-  const { user } = useFirebaseUser();
-  const [used, setUsed] = useState(0);
-  const [totalUsed, setTotalUsed] = useState(0);
+  const { user, token } = useSupabaseUser();
+  const [usageData, setUsageData] = useState<UsageData>({
+    used: 0,
+    limit: 5,
+    totalUsed: 0,
+  });
+  const [loading, setLoading] = useState(true);
   let colorScheme = useColorScheme();
   const darkMode = colorScheme === "dark";
-  const RATE_LIMIT = useRateLimit();
 
   useEffect(() => {
-    const date = new Date().toISOString().split("T")[0];
+    const fetchUsageData = async () => {
+      if (!user || !token) return;
 
-    if (user) {
-      const starCountRef = database().ref(`/rate-limiter/${user.uid}/${date}`);
-      starCountRef.on("value", (snapshot) => {
-        const data = snapshot.val();
-        setUsed(data);
-      });
-    }
+      try {
+        const response = await fetch(
+          `${EXPO_PUBLIC_API_BASE_URL}/mobile-usage`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-    return () => {
-      if (user) {
-        database().ref(`/rate-limiter/${user.uid}/${date}`).off("value");
+        if (response.ok) {
+          const data = await response.json();
+          setUsageData({
+            used: data.todayUsage ?? 0,
+            limit: data.dailyLimit ?? 5,
+            totalUsed: data.totalUsage ?? 0,
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching usage data", error);
+      } finally {
+        setLoading(false);
       }
     };
-  }, [user]);
 
-  useEffect(() => {
-    if (user) {
-      const starCountRef = database().ref(`/rate-limiter/${user.uid}`);
-      starCountRef.on("value", (snapshot) => {
-        let total = 0;
-        snapshot.forEach((child) => {
-          total += child.val();
-        });
-        setTotalUsed(total);
-      });
-    }
+    fetchUsageData();
+  }, [user, token]);
 
-    return () => {
-      if (user) {
-        database().ref(`/rate-limiter/${user.uid}`).off("value");
-      }
-    };
-  }, [user]);
+  if (!user) return null;
+
+  // Supabase user metadata
+  const photoURL = user.user_metadata?.avatar_url ?? user.user_metadata?.picture;
+  const displayName = user.user_metadata?.full_name ?? user.user_metadata?.name ?? "User";
+  const email = user.email ?? "";
+  const createdAt = user.created_at ? new Date(user.created_at) : new Date();
 
   return (
     <View className="bg-white dark:bg-darkBlue">
       <View className="m-10 h-full">
         <Image
-          source={{ uri: user.photoURL }}
+          source={{ uri: photoURL }}
           className="dark:border-2 dark:border-white/80"
           style={{
             width: 80,
@@ -87,7 +98,7 @@ const Profile = () => {
             style={{ textAlign: "center", fontSize: 15 }}
             className="dark:text-white/80"
           >
-            {user.displayName}
+            {displayName}
           </StyledText>
         </View>
         <View
@@ -108,7 +119,7 @@ const Profile = () => {
             Email:
           </StyledText>
           <StyledText style={{ textAlign: "center", fontSize: 15 }}>
-            {user.email}
+            {email}
           </StyledText>
         </View>
 
@@ -150,7 +161,7 @@ const Profile = () => {
             Today's Usage:
           </StyledText>
           <StyledText style={{ textAlign: "center", fontSize: 15 }}>
-            {RATE_LIMIT - used}/{RATE_LIMIT} questions left.
+            {loading ? "..." : `${usageData.limit - usageData.used}/${usageData.limit} questions left.`}
           </StyledText>
         </View>
 
@@ -172,7 +183,7 @@ const Profile = () => {
             Lifetime Usage:
           </StyledText>
           <StyledText style={{ textAlign: "center", fontSize: 15 }}>
-            {totalUsed} questions asked.
+            {loading ? "..." : `${usageData.totalUsed} questions asked.`}
           </StyledText>
         </View>
 
@@ -200,7 +211,7 @@ const Profile = () => {
             }}
           >
             <StyledText style={{ textAlign: "center", fontSize: 15 }}>
-              {new Date(user.metadata.creationTime).toDateString()}
+              {createdAt.toDateString()}
             </StyledText>
             <StyledText
               className="dark:text-white/60 text-black/60"
@@ -210,8 +221,7 @@ const Profile = () => {
               }}
             >
               {Math.floor(
-                (new Date().getTime() -
-                  new Date(user.metadata.creationTime).getTime()) /
+                (new Date().getTime() - createdAt.getTime()) /
                   (1000 * 60 * 60 * 24)
               )}{" "}
               Days ago
@@ -238,7 +248,7 @@ const Profile = () => {
             flexGrow: 0.5,
           }}
         ></View>
-        <Pressable onPress={async () => await auth().signOut()}>
+        <Pressable onPress={() => supabase.auth.signOut()}>
           <StyledText
             className=" text-black/60 dark:text-white/80"
             style={{

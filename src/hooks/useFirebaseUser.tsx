@@ -1,3 +1,6 @@
+// NOTE: This hook is deprecated. Use useSupabaseUser instead.
+// Keeping for reference during migration.
+
 import { useState } from "react";
 import { useEffect } from "react";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";

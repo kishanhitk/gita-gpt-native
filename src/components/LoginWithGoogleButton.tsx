@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import Button from "./Button";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import auth from "@react-native-firebase/auth";
 import { router } from "expo-router";
 import * as Haptics from "expo-haptics";
+import { supabase } from "~/utils/supabase";
 
 export const LoginWithGoogleButton = () => {
   const [loading, setLoading] = useState(false);
@@ -17,14 +17,25 @@ export const LoginWithGoogleButton = () => {
   async function onGoogleButtonPress() {
     // Check if your device supports Google Play
     await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-    // Get the users ID token
-    const { idToken } = await GoogleSignin.signIn();
+    
+    // Get the users ID token from native Google Sign-In
+    const signInResult = await GoogleSignin.signIn();
+    // Handle both old and new google-signin library response structures
+    const idToken = (signInResult as any)?.data?.idToken ?? (signInResult as any)?.idToken;
 
-    // Create a Google credential with the token
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+    if (!idToken) {
+      throw new Error("No ID token returned from Google Sign-In");
+    }
 
-    // Sign-in the user with the credential
-    return auth().signInWithCredential(googleCredential);
+    // Sign in with Supabase using the Google ID token
+    const { error } = await supabase.auth.signInWithIdToken({
+      provider: "google",
+      token: idToken,
+    });
+
+    if (error) {
+      throw error;
+    }
   }
 
   return (

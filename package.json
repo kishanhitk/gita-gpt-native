@@ -20,6 +20,7 @@
     "@react-native-firebase/messaging": "^18.9.0",
     "@react-native-google-signin/google-signin": "^11.0.0",
     "@react-navigation/drawer": "^6.6.7",
+    "@supabase/supabase-js": "^2.45.0",
     "@types/react": "~18.2.45",
     "axios": "^1.6.7",
     "clsx": "^2.1.0",

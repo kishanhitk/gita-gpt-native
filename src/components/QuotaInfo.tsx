@@ -1,37 +1,59 @@
 import React, { useEffect, useState } from "react";
-import database from "@react-native-firebase/database";
 import StyledText from "./StyledText";
-import { useRateLimit } from "../hooks/useRateLimit";
-import { useFirebaseUser } from "../hooks/useFirebaseUser";
+import { useSupabaseUser } from "~/hooks/useSupabaseUser";
+import { EXPO_PUBLIC_API_BASE_URL } from "~/utils/constants";
+
+interface UsageInfo {
+  used: number;
+  limit: number;
+}
 
 const QuotaInfo = () => {
-  const { user } = useFirebaseUser();
-  const [used, setUsed] = useState(0);
-  const RATE_LIMIT = useRateLimit();
+  const { user, token } = useSupabaseUser();
+  const [usageInfo, setUsageInfo] = useState<UsageInfo>({ used: 0, limit: 5 });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const date = new Date().toISOString().split("T")[0];
+    const fetchUsage = async () => {
+      if (!user || !token) {
+        setLoading(false);
+        return;
+      }
 
-    if (user) {
-      const starCountRef = database().ref(`/rate-limiter/${user.uid}/${date}`);
-      starCountRef.on("value", (snapshot) => {
-        const data = snapshot.val();
-        setUsed(data);
-      });
-    }
+      try {
+        const response = await fetch(
+          `${EXPO_PUBLIC_API_BASE_URL}/mobile-usage`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-    return () => {
-      if (user) {
-        database().ref(`/rate-limiter/${user.uid}/${date}`).off("value");
+        if (response.ok) {
+          const data = await response.json();
+          setUsageInfo({
+            used: data.todayUsage ?? 0,
+            limit: data.dailyLimit ?? 5,
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching quota info", error);
+      } finally {
+        setLoading(false);
       }
     };
-  }, [user]);
 
-  return user ? (
+    fetchUsage();
+  }, [user, token]);
+
+  if (!user || loading) return null;
+
+  return (
     <StyledText className="mt-2 text-right text-sm font-light dark:text-white/60">
-      {RATE_LIMIT - used}/{RATE_LIMIT} questions left.
+      {usageInfo.limit - usageInfo.used}/{usageInfo.limit} questions left.
     </StyledText>
-  ) : null;
+  );
 };
 
 export default QuotaInfo;

@@ -1,4 +1,3 @@
-import auth from "@react-native-firebase/auth";
 import {
   DrawerContentScrollView,
   DrawerItem,
@@ -20,12 +19,13 @@ import {
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import StyledText from "~/components/StyledText";
-import { useFirebaseUser } from "~/hooks/useFirebaseUser";
+import { useSupabaseUser } from "~/hooks/useSupabaseUser";
+import { supabase } from "~/utils/supabase";
 
 export default function Layout() {
   let colorScheme = useColorScheme();
   const darkMode = colorScheme === "dark";
-  const { user, initializing } = useFirebaseUser();
+  const { user, initializing } = useSupabaseUser();
   const [isOffline, setIsOffline] = useState(false);
 
   const networkStatus = async () => {
@@ -108,7 +108,7 @@ export default function Layout() {
                   }}
                 >
                   <Image
-                    source={{ uri: user.photoURL }}
+                    source={{ uri: user.user_metadata?.avatar_url ?? user.user_metadata?.picture }}
                     style={{
                       width: 35,
                       height: 35,
@@ -160,7 +160,7 @@ export default function Layout() {
 
               <DrawerItemList {...props} />
               <View style={{ marginTop: "auto" }}>
-                <DrawerItem label="Logout" onPress={() => auth().signOut()} />
+                <DrawerItem label="Logout" onPress={() => supabase.auth.signOut()} />
               </View>
             </DrawerContentScrollView>
           );

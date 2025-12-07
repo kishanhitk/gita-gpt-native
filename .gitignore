@@ -33,6 +33,7 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+src/**/*.js
 .env
 build-1708530414677.apk
 
