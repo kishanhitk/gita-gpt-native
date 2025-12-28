@@ -23,11 +23,9 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.kishans.gitagpt",
-      "googleServicesFile": "./google-services.json",
       "targetSdkVersion": 35,
       "permissions": [
-        "RECORD_AUDIO",
-        "com.google.android.gms.permission.AD_ID"
+        "RECORD_AUDIO"
       ]
     },
     "web": {
@@ -37,8 +35,15 @@
     "plugins": [
       "expo-font",
       "expo-router",
-      "@react-native-firebase/app",
-      "@react-native-firebase/auth",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 35
+          }
+        }
+      ],
       [
         "expo-updates",
         {
