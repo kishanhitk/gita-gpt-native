@@ -24,6 +24,7 @@
       },
       "package": "com.kishans.gitagpt",
       "googleServicesFile": "./google-services.json",
+      "targetSdkVersion": 35,
       "permissions": [
         "RECORD_AUDIO",
         "com.google.android.gms.permission.AD_ID"
