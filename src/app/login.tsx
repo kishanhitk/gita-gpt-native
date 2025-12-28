@@ -1,5 +1,6 @@
 import { ScrollView, View } from "react-native";
 import { LoginWithGoogleButton } from "~/components/LoginWithGoogleButton";
+import { LoginAnonymousButton } from "~/components/LoginAnonymousButton";
 import StyledText from "~/components/StyledText";
 import { StatusBar } from "expo-status-bar";
 import Hero from "~/components/Hero";
@@ -10,9 +11,11 @@ const Index = () => {
       <View className="flex-1 items-center justify-center mx-5 flex-col h-screen">
         <Hero />
         <LoginWithGoogleButton />
+        {__DEV__ && <LoginAnonymousButton />}
         <StatusBar style="auto" />
       </View>
     </ScrollView>
   );
 };
 export default Index;
+
