@@ -6,8 +6,14 @@ module.exports = function (api) {
       "nativewind/babel",
     ],
     plugins: [
-      // Required for expo-router
-      // "expo-router/babel",
+      [
+        "module-resolver",
+        {
+          alias: {
+            "react-native-worklets": "react-native-worklets-core",
+          },
+        },
+      ],
       "react-native-reanimated/plugin",
     ],
   };
