@@ -11,7 +11,7 @@
     },
     "preview": {
       "env": {
-        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "563786112721-ff60ev58euuuuv3qoht8busvve2e7pf5.apps.googleusercontent.com",
+        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "563786112721-78ijhql12o57m9geb27d3ubnmedobr4h.apps.googleusercontent.com",
         "EXPO_PUBLIC_API_BASE_URL": "https://gita.kishans.in/api"
       },
       "distribution": "internal",
@@ -20,8 +20,10 @@
     "production": {
       "autoIncrement": true,
       "env": {
-        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "563786112721-ff60ev58euuuuv3qoht8busvve2e7pf5.apps.googleusercontent.com",
-        "EXPO_PUBLIC_API_BASE_URL": "https://gita.kishans.in/api"
+        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "563786112721-78ijhql12o57m9geb27d3ubnmedobr4h.apps.googleusercontent.com",
+        "EXPO_PUBLIC_API_BASE_URL": "https://gita.kishans.in/api",
+        "EXPO_PUBLIC_SUPABASE_URL": "https://pdcobvqvpfshfxmfvsct.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "sb_publishable_WHFsTiqf5aEaGdheh2VOoA_GbjrtvkA"
       },
       "channel": "production"
     }
