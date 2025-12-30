@@ -40,7 +40,10 @@
         {
           "android": {
             "compileSdkVersion": 35,
-            "targetSdkVersion": 35
+            "targetSdkVersion": 35,
+            "useLegacyPackaging": false,
+            "extraProguardRules": "-keep class ** { *; }",
+            "enableProguardInReleaseBuilds": false
           }
         }
       ],
